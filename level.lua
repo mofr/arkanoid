@@ -16,15 +16,17 @@ level.board = board
 
 grid_visible = false
 
-function newBall(x, y, velx, vely, r)
+function newBall(x, y, velx, vely, r, m)
 	local ball = {}
 	table.insert(balls, ball)
 
 	ball.x = x or 100
 	ball.y = y or 100
-	ball.velx = velx or 300
-	ball.vely = vely or 300
+	ball.velx = velx or 0
+	ball.vely = vely or 0
 	ball.r = r or 10
+	ball.m = m or 400
+	ball.pole = 1
 	ball.ax = 0
 	ball.ay = 0
 	return ball
@@ -32,6 +34,7 @@ end
 
 function newExplosion(x, y, dir, power)
 	power = power or 0.5
+	if power > 1 then power = 1 end
 	p = g.newParticleSystem(part1, 1000)
 	table.insert(explosions, p)
 	p:setEmissionRate(1000 * power)
@@ -55,20 +58,23 @@ function level.load()
 	local ball = newBall()
 	ball.x = 200
 	ball.y = 200
-	ball.velx = 30
-	ball.vely = 30
+	ball.velx = 0--300
+	ball.vely = 0--300
 	ball.r = 10
 	
 	ball = newBall()
 	ball.x = 300
-	ball.velx = 5
-	ball.vely = 16
+	ball.velx = 0--50
+	ball.vely = 0--160
+	ball.pole = -1
 
---	ball = newBall()
---	ball.x = 500
---	ball.velx = 120
---	ball.vely = 200
---	ball.ps = ball_ps
+	ball = newBall()
+	ball.x = 500
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = ball_ps
+	ball.m = 1	
+	ball.pole = -1
 end
 
 function level.update(dt)
@@ -85,21 +91,26 @@ function level.update(dt)
 		ball.ay = 0
 		for k, ball2 in ipairs(balls) do
 			if k ~= i then
-				local d = math.sqrt(ball2.x*ball2.x+ball2.y*ball2.y)
 				local dx = ball2.x - ball.x
 				local dy = ball2.y - ball.y
-				local ax = 1000/dx/d
-				local ay = 1000/dy/d
-				if ax > 100 then ax = 100 end
-				if ay > 100 then ay = 100 end
+				if math.abs(dx) < 5 then dx = w end
+				if math.abs(dy) < 5 then dy = h end
+				local d = math.sqrt(dx*dx+dy*dy)
+				local koef = -150*ball.m*ball2.m/d/d * ball.pole*ball2.pole
+				local ax = dx*koef
+				local ay = dy*koef
 				ball.ax = ball.ax + ax
 				ball.ay = ball.ay + ay
 			end
 		end
 
 		--apply acceleration to velocity
-		ball.velx = ball.velx + ball.ax*dt
-		ball.vely = ball.vely + ball.ay*dt
+		ball.velx = ball.velx + ball.ax*dt/ball.m
+		ball.vely = ball.vely + ball.ay*dt/ball.m
+
+		--limit velocity
+		if ball.velx > w then ball.velx = w end
+		if ball.vely > h then ball.vely = h end
 		
 		--apply velocity to position
 		ball.x = ball.x + dt*ball.velx
@@ -152,8 +163,13 @@ function level.draw()
 			g.setBlendMode("additive")
 			g.draw(ball.ps, 0, 0)
 		else
+			if ball.pole == 1 then
+				g.setColor(255, 0, 0)
+			else
+				g.setColor(0, 0, 255)
+			end
 			g.circle("fill", ball.x, ball.y, ball.r, 32)
-			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
+--			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
 		end
 	end
 end

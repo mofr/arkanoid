@@ -32,7 +32,7 @@ function love.load()
 	p:setParticleLife(1.0)
 	p:setSpin(1)
 	p:setSpread(360)
-	p:setColors(120,130,255,255, 200,200,255,255, 200,200,255,0)
+	p:setColors(120,130,255,255, 200,200,255,255, 200,200,255,255)
 	p:start()
 
 	
@@ -67,6 +67,7 @@ function love.draw()
 
 	for _, e in ipairs(explosions) do g.draw(e, 0, 0) end
 
+	g.setColor(255,255,255)
 	local text = ps:count()..' particles'
 	text = text..'\n'..love.timer.getFPS()..' fps'
 	text = text..'\n'..#explosions..' explosions'
@@ -76,4 +77,7 @@ end
 function love.keypressed(key)
 	game.keypressed(key)
 	if key == "escape" then love.event.push('quit') end
+end
+
+function love.mousepressed(x, y, button)
 end
