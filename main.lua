@@ -12,7 +12,7 @@ function love.load()
 	p:setPosition(100, 100)
 	p:setEmissionRate(350)
 --	p:setLifetime(2)
-	p:setSizes(0.5, 0.6, 0.6, 0.6, 0.1, 0.0, 0.0, 0.0)
+	p:setSizes(0.5, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2)
 	p:setTangentialAcceleration(-100.0, 100.0)
 	p:setSpeed(50, 100)
 	p:setParticleLife(1.5)
@@ -26,10 +26,10 @@ function love.load()
 	p:setPosition(100, 100)
 	p:setEmissionRate(350)
 --	p:setLifetime(2)
-	p:setSizes(0.5, 0.6, 0.6, 0.6, 0.1, 0.0, 0.0, 0.0)
+	p:setSizes(0.5, 0.3, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
 	p:setTangentialAcceleration(-100.0, 100.0)
 	p:setSpeed(50, 100)
-	p:setParticleLife(1.5)
+	p:setParticleLife(1.0)
 	p:setSpin(1)
 	p:setSpread(360)
 	p:setColors(120,130,255,255, 200,200,255,255, 200,200,255,0)
@@ -47,9 +47,15 @@ end
 function love.update(dt)
 	game.update(dt)
 	ps:setPosition(love.mouse.getX(), love.mouse.getY())
-	ps:update(dt)
+--	ps:update(dt)
 
-	for _, e in ipairs(explosions) do e:update(dt) end
+	for i, e in ipairs(explosions) do 
+		if not e:isActive() then
+			table.remove(explosions, i)
+		else
+			e:update(dt) 
+		end
+	end
 end
 
 function love.draw()
