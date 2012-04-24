@@ -9,12 +9,11 @@ board.x = 0
 board.y = 0
 board.w = 100
 
-local balls = {}
-
 level.field = field
 level.board = board
+level.balls = {}
 
-grid_visible = false
+local balls = level.balls
 
 function newBall(x, y, velx, vely, r, m)
 	local ball = {}
@@ -30,6 +29,22 @@ function newBall(x, y, velx, vely, r, m)
 	ball.ax = 0
 	ball.ay = 0
 	return ball
+end
+
+function newBallPS()
+	p = g.newParticleSystem(particle, 1500)
+	p:setPosition(100, 100)
+	p:setEmissionRate(350)
+--	p:setLifetime(2)
+	p:setSizes(0.5, 0.3, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+	p:setTangentialAcceleration(-100.0, 100.0)
+	p:setSpeed(50, 100)
+	p:setParticleLife(1.0)
+	p:setSpin(1)
+	p:setSpread(360)
+	p:setColors(120,130,255,255, 200,200,255,255, 200,200,255,255)
+	p:start()
+	return p
 end
 
 function newExplosion(x, y, dir, power)
@@ -66,13 +81,29 @@ function level.load()
 	ball.x = 300
 	ball.velx = 0--50
 	ball.vely = 0--160
-	ball.pole = -1
+	ball.pole = 1
 
 	ball = newBall()
 	ball.x = 500
 	ball.velx = 0--120
 	ball.vely = 0--200
-	ball.ps = ball_ps
+	ball.ps = newBallPS()
+	ball.m = 1	
+	ball.pole = -1
+
+	ball = newBall()
+	ball.x = 600
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = newBallPS()
+	ball.m = 1	
+	ball.pole = -1
+
+	ball = newBall()
+	ball.x = 650
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = newBallPS()
 	ball.m = 1	
 	ball.pole = -1
 end
@@ -89,18 +120,20 @@ function level.update(dt)
 		--apply gravity to acceleration
 		ball.ax = 0
 		ball.ay = 0
-		for k, ball2 in ipairs(balls) do
-			if k ~= i then
-				local dx = ball2.x - ball.x
-				local dy = ball2.y - ball.y
-				if math.abs(dx) < 5 then dx = w end
-				if math.abs(dy) < 5 then dy = h end
-				local d = math.sqrt(dx*dx+dy*dy)
-				local koef = -150*ball.m*ball2.m/d/d * ball.pole*ball2.pole
-				local ax = dx*koef
-				local ay = dy*koef
-				ball.ax = ball.ax + ax
-				ball.ay = ball.ay + ay
+		if gravity then
+			for k, ball2 in ipairs(balls) do
+				if k ~= i then
+					local dx = ball2.x - ball.x
+					local dy = ball2.y - ball.y
+					if math.abs(dx) < 5 then dx = w end
+					if math.abs(dy) < 5 then dy = h end
+					local d = math.sqrt(dx*dx+dy*dy)
+					local koef = -150*ball.m*ball2.m/d/d * ball.pole*ball2.pole
+					local ax = dx*koef
+					local ay = dy*koef
+					ball.ax = ball.ax + ax
+					ball.ay = ball.ay + ay
+				end
 			end
 		end
 
@@ -175,9 +208,6 @@ function level.draw()
 end
 
 function level.keypressed(key)
-	if key == "g" then
-		grid_visible = not grid_visible
-	end
 end
 
 return level
