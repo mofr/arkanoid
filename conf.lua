@@ -6,10 +6,10 @@ function love.conf(t)
 	t.author = "mofr"
 	t.identity = "mofr_arkanoid"
 	t.screen.fsaa = 4
-	t.screen.width = 800
-	t.screen.height = 600
+	t.screen.width = 1024
+	t.screen.height = 768
 	t.screen.vsync = false
-	t.screen.fullscreen = true
+	t.screen.fullscreen = false
 	t.modules.joystick = false
 	t.modules.physics = false
 end

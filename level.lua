@@ -1,19 +1,21 @@
 local level = {}
 
-local field = {}
-field.w = 30
-field.h = 40
-
-local board = {}
-board.x = 0
-board.y = 0
-board.w = 100
-
-level.field = field
-level.board = board
+level.field = {}
+level.board = {}
 level.balls = {}
 
 local balls = level.balls
+
+local board = level.board
+board.x = 0
+board.y = 0
+board.w = 100
+board.m = 3000
+board.pole = 0
+
+local field = level.field
+field.w = 30
+field.h = 40
 
 function newBall(x, y, velx, vely, r, m)
 	local ball = {}
@@ -25,7 +27,7 @@ function newBall(x, y, velx, vely, r, m)
 	ball.vely = vely or 0
 	ball.r = r or 10
 	ball.m = m or 400
-	ball.pole = 1
+	ball.pole = 0
 	ball.ax = 0
 	ball.ay = 0
 	return ball
@@ -67,6 +69,20 @@ function newExplosion(x, y, dir, power)
 	p:start()
 end
 
+--returns p1 gravity force to p2
+function calcGravity(p1, p2)
+	local dx = p2.x - p1.x
+	local dy = p2.y - p1.y
+	if math.abs(dx) < 5 then dx = 500 end
+	if math.abs(dy) < 5 then dy = 500 end
+	local d = math.sqrt(dx*dx+dy*dy)
+	local koef = -150*p1.m*p2.m/d/d * p1.pole*p2.pole
+	local ax = dx*koef
+	local ay = dy*koef
+
+	return ax, ay
+end
+
 function level.load()
 	board.x = g.getWidth()/2
 
@@ -76,13 +92,14 @@ function level.load()
 	ball.velx = 0--300
 	ball.vely = 0--300
 	ball.r = 10
-	
+	ball.pole = 1
+--[[
 	ball = newBall()
 	ball.x = 300
 	ball.velx = 0--50
 	ball.vely = 0--160
 	ball.pole = 1
-
+]]
 	ball = newBall()
 	ball.x = 500
 	ball.velx = 0--120
@@ -90,7 +107,7 @@ function level.load()
 	ball.ps = newBallPS()
 	ball.m = 1	
 	ball.pole = -1
-
+--[[
 	ball = newBall()
 	ball.x = 600
 	ball.velx = 0--120
@@ -105,7 +122,7 @@ function level.load()
 	ball.vely = 0--200
 	ball.ps = newBallPS()
 	ball.m = 1	
-	ball.pole = -1
+	ball.pole = -1]]
 end
 
 function level.update(dt)
@@ -121,20 +138,20 @@ function level.update(dt)
 		ball.ax = 0
 		ball.ay = 0
 		if gravity then
+			local ax
+			local ay
 			for k, ball2 in ipairs(balls) do
 				if k ~= i then
-					local dx = ball2.x - ball.x
-					local dy = ball2.y - ball.y
-					if math.abs(dx) < 5 then dx = w end
-					if math.abs(dy) < 5 then dy = h end
-					local d = math.sqrt(dx*dx+dy*dy)
-					local koef = -150*ball.m*ball2.m/d/d * ball.pole*ball2.pole
-					local ax = dx*koef
-					local ay = dy*koef
+					ax, ay = calcGravity(ball, ball2)
 					ball.ax = ball.ax + ax
 					ball.ay = ball.ay + ay
 				end
 			end
+
+			ax, ay = calcGravity(ball, board)
+
+			ball.ax = ball.ax + ax
+			ball.ay = ball.ay + ay
 		end
 
 		--apply acceleration to velocity
@@ -189,6 +206,13 @@ end
 function level.draw()
 	if grid_visible then draw_grid() end
 	g.reset()
+	if board.pole == 1 then
+		g.setColor(255, 0, 0)
+	elseif board.pole == -1 then
+		g.setColor(0, 0, 255)
+	else
+		g.setColor(255, 255, 255)
+	end
 	g.rectangle("fill", board.x, g.getHeight()-16, board.w, 16)
 
 	for _, ball in ipairs(balls) do
@@ -198,8 +222,10 @@ function level.draw()
 		else
 			if ball.pole == 1 then
 				g.setColor(255, 0, 0)
-			else
+			elseif board.pole == -1 then
 				g.setColor(0, 0, 255)
+			else
+				g.setColor(255, 255, 255)
 			end
 			g.circle("fill", ball.x, ball.y, ball.r, 32)
 --			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)

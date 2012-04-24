@@ -9,20 +9,6 @@ function love.load()
 	grid_visible = false
 
 	particle = g.newImage('flare.png')
-	ps = g.newParticleSystem(particle, 1500)
-	p = ps
-	p:setPosition(100, 100)
-	p:setEmissionRate(350)
---	p:setLifetime(2)
-	p:setSizes(0.5, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2)
-	p:setTangentialAcceleration(-100.0, 100.0)
-	p:setSpeed(50, 100)
-	p:setParticleLife(1.5)
-	p:setSpin(1)
-	p:setSpread(360)
-	p:setColors(120,130,255,255, 200,200,255,255, 200,200,255,0)
-	p:start()
-
 	part1 = g.newImage("part1.png");
 	explosions = {}
 
@@ -32,6 +18,13 @@ function love.load()
 end
 
 function love.update(dt)
+	if love.mouse.isDown('l') then
+		game.level.board.pole = -1
+	elseif love.mouse.isDown('r') then
+		game.level.board.pole = 1
+	else
+		game.level.board.pole = 0
+	end
 	game.update(dt)
 --	ps:setPosition(love.mouse.getX(), love.mouse.getY())
 --	ps:update(dt)
@@ -72,4 +65,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
+end
+
+function love.mousereleased(button)
 end
