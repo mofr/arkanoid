@@ -7,12 +7,29 @@ function menu:enter()
 	love.mouse.setVisible(true)
 end
 
+local bw = 120
+local bh = 40
+local spacing = 10
+
+function menu:update(dt)
+	local w = g.getWidth()
+	local h = g.getHeight()
+	local top = h/3
+
+	if gui.Button('Start game', w/2-bw/2,top, bw,bh) then
+		gs.switch(game.main)
+	end
+	
+	top = top + bh + spacing
+	if gui.Button('Exit', w/2-bw/2,top, bw,bh) then
+		love.event.push('quit')
+	end
+end
+
 function menu:draw()
-	g.print('Press SPACE to start game', 100, 5)
 end
 
 function menu:keypressed(key)
-	if key == ' ' then gs.switch(game.main) end
 	if key == 'escape' then love.event.push('quit') end
 end
 
