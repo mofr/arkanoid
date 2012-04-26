@@ -1,6 +1,8 @@
 
 function love.load()
 	gs = require 'hump/gamestate'
+	timer = require 'hump/timer'
+--	gui = require 'quickie'
 	g = love.graphics
 
 	game = {}
@@ -10,6 +12,7 @@ function love.load()
 end
 
 function love.update(dt)
+	timer.update(dt)
 	gs.update(dt)
 end
 

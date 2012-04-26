@@ -20,7 +20,6 @@ local field = {}
 field.w = 30
 field.h = 40
 
-
 function main:init()
 end
 
@@ -28,10 +27,13 @@ function main:enter()
 	love.mouse.setVisible(false)
 end
 
+function main:leave()
+end
+
 function main:keypressed(key)
 	if key == 'escape' then gs.switch(game.menu) end
-	if key == "g" then gravity = not gravity end
-	if key == "t" then grid_visible = not grid_visible end
+	if key == 'g' then gravity = not gravity end
+	if key == 't' then grid_visible = not grid_visible end
 end
 
 function newBall(x, y, velx, vely, r, m)
@@ -261,7 +263,7 @@ function main:draw()
 		else
 			if ball.pole == 1 then
 				g.setColor(255, 0, 0)
-			elseif board.pole == -1 then
+			elseif ball.pole == -1 then
 				g.setColor(0, 0, 255)
 			else
 				g.setColor(255, 255, 255)
