@@ -25,6 +25,7 @@ function love.draw()
 end
 
 function love.keypressed(key, code)
+	if key == 'f12' then g.toggleFullscreen() end
 	gs.keypressed(key, code)
 	gui.core.keyboard.pressed(key, code)
 end
