@@ -152,6 +152,7 @@ function main:update(dt)
 	local h = g.getHeight()
 
 	--board position
+	board.y = h
 	board.x = love.mouse.getX()-board.w/2
 	if board.x < 0 then board.x = 0 end
 	if board.x+board.w > w then board.x = w-board.w end
@@ -255,7 +256,7 @@ function main:draw()
 	else
 		g.setColor(255, 255, 255)
 	end
-	g.rectangle("fill", board.x, g.getHeight()-16, board.w, 16)
+	g.rectangle("fill", board.x, board.y-16, board.w, 16)
 
 	for _, ball in ipairs(balls) do
 		if ball.ps then
