@@ -1,6 +1,3 @@
-
--- [Ice Project 2012, turtlesort.com]
-
 function love.conf(t)
 	t.title = "mofr arkanoid"
 	t.author = "mofr"

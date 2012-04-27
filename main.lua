@@ -6,9 +6,11 @@ function love.load()
 	g = love.graphics
 
 	game = {}
-	game.menu = require 'states/menu'
-	game.main = require 'states/main'
-	gs.switch(game.menu)
+	game.state = {}
+	game.state.menu = require 'states/main_menu'
+	game.state.play = require 'states/play'
+	game.level = require 'game/level'
+	gs.switch(game.state.menu)
 end
 
 function love.update(dt)

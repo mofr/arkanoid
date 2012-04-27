@@ -1,1 +1,7 @@
 +grab mouse
+
+levels:
+	blocks: position, properties
+	bonuses
+	style: board, balls, blocks, gui
+	

@@ -18,7 +18,7 @@ function menu:update(dt)
 	local top = h/3
 
 	if gui.Button('Start game', w/2-bw/2,top, bw,bh) then
-		gs.switch(game.main)
+		gs.switch(game.state.play)
 	end
 	
 	top = top + bh + spacing

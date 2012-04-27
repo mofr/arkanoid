@@ -1,5 +1,8 @@
 local main = gs.new()
 
+local menu = require 'game/game_menu'
+local in_menu = false
+
 local particle = g.newImage('media/flare.png')
 local part1 = g.newImage('media/part1.png');
 local explosions = {}
@@ -16,25 +19,88 @@ board.w = 100
 board.m = 3000
 board.pole = 0
 
-local field = {}
-field.w = 30
-field.h = 40
+local function reset()
+	balls = {}
+	board.x = g.getWidth()/2
+
+	local ball = newBall()
+	ball.x = 200
+	ball.y = 200
+	ball.velx = 0--300
+	ball.vely = 0--300
+	ball.r = 10
+	ball.pole = 1
+--[[
+	ball = newBall()
+	ball.x = 300
+	ball.velx = 0--50
+	ball.vely = 0--160
+	ball.pole = 1
+]]
+	ball = newBall()
+	ball.x = 500
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = newBallPS()
+	ball.m = 1	
+	ball.pole = -1
+--[[
+	ball = newBall()
+	ball.x = 600
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = newBallPS()
+	ball.m = 1	
+	ball.pole = -1
+
+	ball = newBall()
+	ball.x = 650
+	ball.velx = 0--120
+	ball.vely = 0--200
+	ball.ps = newBallPS()
+	ball.m = 1	
+	ball.pole = -1]]
+
+	game.level.first()
+end
+
+
+function menu_enter()
+	in_menu = true
+	menu:enter()
+end
+
+function menu.resume()
+	in_menu = false
+	love.mouse.setVisible(false)
+	love.mouse.setGrab(true)
+end
+
+function menu.exit()
+	gs.switch(game.state.menu)
+end
 
 function main:init()
 end
 
 function main:enter()
+	in_menu = false
 	love.mouse.setVisible(false)
 	love.mouse.setGrab(true)
+	reset()
 end
 
 function main:leave()
 end
 
 function main:keypressed(key)
-	if key == 'escape' then gs.switch(game.menu) end
-	if key == 'g' then gravity = not gravity end
-	if key == 't' then grid_visible = not grid_visible end
+	if in_menu then
+		menu:keypressed(key)
+	else
+		if key == 'escape' then menu_enter() end
+		if key == 'g' then gravity = not gravity end
+		if key == 't' then grid_visible = not grid_visible end
+	end
 end
 
 function newBall(x, y, velx, vely, r, m)
@@ -103,51 +169,7 @@ function calcGravity(p1, p2)
 	return ax, ay
 end
 
-function load()
-	board.x = g.getWidth()/2
-
-	local ball = newBall()
-	ball.x = 200
-	ball.y = 200
-	ball.velx = 0--300
-	ball.vely = 0--300
-	ball.r = 10
-	ball.pole = 1
---[[
-	ball = newBall()
-	ball.x = 300
-	ball.velx = 0--50
-	ball.vely = 0--160
-	ball.pole = 1
-]]
-	ball = newBall()
-	ball.x = 500
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1
---[[
-	ball = newBall()
-	ball.x = 600
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1
-
-	ball = newBall()
-	ball.x = 650
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1]]
-end
-
-load()
-
-function main:update(dt)
+local function update_level(dt)
 	local w = g.getWidth()
 	local h = g.getHeight()
 
@@ -236,7 +258,15 @@ function main:update(dt)
 	end
 end
 
-function draw_grid()
+function main:update(dt)
+	if in_menu then 
+		menu:update(dt)
+	else
+		update_level(dt)
+	end
+end
+
+local function draw_grid()
 	g.setColor(255,255,255, 32)
 	for x = 0, g.getWidth(), 16 do
 		g.line(x, 0, x, g.getHeight())
@@ -246,18 +276,7 @@ function draw_grid()
 	end
 end
 
-function main:draw()
-	if grid_visible then draw_grid() end
-	g.reset()
-	if board.pole == 1 then
-		g.setColor(255, 0, 0)
-	elseif board.pole == -1 then
-		g.setColor(0, 0, 255)
-	else
-		g.setColor(255, 255, 255)
-	end
-	g.rectangle("fill", board.x, board.y-16, board.w, 16)
-
+local function draw_balls()
 	for _, ball in ipairs(balls) do
 		if ball.ps then
 			g.setBlendMode("additive")
@@ -274,8 +293,33 @@ function main:draw()
 --			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
 		end
 	end
-	
+end
+
+local function draw_board()
+	if board.pole == 1 then
+		g.setColor(255, 0, 0)
+	elseif board.pole == -1 then
+		g.setColor(0, 0, 255)
+	else
+		g.setColor(255, 255, 255)
+	end
+	g.rectangle("fill", board.x, board.y-16, board.w, 16)
+end
+
+local function draw_effects()
 	for _, e in ipairs(explosions) do g.draw(e, 0, 0) end
+end
+
+local function draw_level()
+	if grid_visible then draw_grid() end
+	game.level.draw()
+	draw_board()
+	draw_balls()
+	draw_effects()
+end
+
+function main:draw()
+	draw_level()
 end
 
 return main
