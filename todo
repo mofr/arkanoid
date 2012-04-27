@@ -4,4 +4,5 @@ levels:
 	blocks: position, properties
 	bonuses
 	style: board, balls, blocks, gui
-	
+
+world(level) bounds

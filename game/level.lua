@@ -2,7 +2,7 @@ local level = {}
 
 local __NULL__ = function() end
 
-local levels = {'1', '2'}
+local levels = {'1', '2', '3'}
 
 function level.new()
 	return {
@@ -51,6 +51,9 @@ local function draw_blocks()
 	for _, block in ipairs(blocks) do
 		g.rectangle('fill', block.x, block.y, block.w, block.h)
 	end
+end
+
+function level.update(dt)
 end
 
 function level.draw()

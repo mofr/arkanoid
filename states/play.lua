@@ -107,15 +107,27 @@ function newBall(x, y, velx, vely, r, m)
 	local ball = {}
 	table.insert(balls, ball)
 
+	r = r or 10
+
 	ball.x = x or 100
 	ball.y = y or 100
 	ball.velx = velx or 0
 	ball.vely = vely or 0
-	ball.r = r or 10
+	ball.r = r
 	ball.m = m or 400
 	ball.pole = 0
 	ball.ax = 0
 	ball.ay = 0
+
+	ball.phys = {}
+	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
+	ball.phys.b:setMass(10)
+	ball.phys.s = love.physics.newCircleShape(r)
+	ball.phys.f = love.physics.newFixture(ball.phys.b, ball.phys.s)
+	ball.phys.f:setFriction(0)
+	ball.phys.f:setRestitution(1)
+--	ball.phys.b:applyLinearImpulse(230, 230)
+
 	return ball
 end
 
@@ -187,7 +199,26 @@ local function update_level(dt)
 	else
 		board.pole = 0
 	end
+
+	for i, ball in ipairs(balls) do
+		if gravity then
+			local dx = board.x - ball.phys.b:getX()
+			local dy = board.y - ball.phys.b:getY()
+			if math.abs(dx) < 5 then dx = 500 end
+			if math.abs(dy) < 5 then dy = 500 end
+			local d = math.sqrt(dx*dx+dy*dy)
+			local koef = -0.3*ball.m*board.m/d/d * ball.pole*board.pole
+			local fx = dx*koef
+			local fy = dy*koef
+			ball.phys.b:applyForce(fx, fy)
+		end
 	
+		if ball.ps then
+			ball.ps:setPosition(ball.phys.b:getX(), ball.phys.b:getY())
+			ball.ps:update(dt)
+		end
+	end
+--[[	
 	--balls
 	for i, ball in ipairs(balls) do
 		--apply gravity to acceleration
@@ -247,7 +278,7 @@ local function update_level(dt)
 			ball.ps:update(dt)
 		end
 	end
-
+]]
 	--remove old explosions
 	for i, e in ipairs(explosions) do 
 		if not e:isActive() then
@@ -256,6 +287,9 @@ local function update_level(dt)
 			e:update(dt) 
 		end
 	end
+
+	game.level.update(dt)
+	game.world:update(dt)
 end
 
 function main:update(dt)
@@ -289,7 +323,7 @@ local function draw_balls()
 			else
 				g.setColor(255, 255, 255)
 			end
-			g.circle("fill", ball.x, ball.y, ball.r, 32)
+			g.circle("fill", ball.phys.b:getX(), ball.phys.b:getY(), ball.r, 32)
 --			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
 		end
 	end
@@ -320,6 +354,11 @@ end
 
 function main:draw()
 	draw_level()
+
+	g.setColor(255,255,255)
+--	love.graphics.circle("fill", ball.b:getX(),ball.b:getY(), ball.s:getRadius())
+--	love.graphics.polygon("line", floor.b:getWorldPoints(floor.s:getPoints()))
+	love.graphics.line(outline.b:getWorldPoints(outline.s:getPoints()))
 end
 
 return main

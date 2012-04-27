@@ -10,7 +10,26 @@ function love.load()
 	game.state.menu = require 'states/main_menu'
 	game.state.play = require 'states/play'
 	game.level = require 'game/level'
+	game.world = love.physics.newWorld(0, 0)
+	love.physics.setMeter(30)
 	gs.switch(game.state.menu)
+
+--	floor = {}
+--	floor.b = love.physics.newBody(game.world, 120, 200, 'static')
+--	floor.s = love.physics.newRectangleShape(200, 50)
+--	floor.f = love.physics.newFixture(floor.b, floor.s)
+--	floor.f:setFriction(0)
+--	floor.f:setRestitution(1)
+
+	local w = g.getWidth()
+	local h = g.getHeight()
+
+	outline = {}
+	outline.b = love.physics.newBody(game.world, 0, 0, 'static')
+	outline.s = love.physics.newChainShape(true, 5, 5, w-5, 5, w-5, h-5, 5, h-5)
+	outline.f = love.physics.newFixture(outline.b, outline.s)
+	outline.f:setFriction(0)
+	outline.f:setRestitution(1)
 end
 
 function love.update(dt)
