@@ -5,6 +5,7 @@ end
 
 function menu:enter()
 	love.mouse.setVisible(true)
+	love.mouse.setGrab(false)
 end
 
 local bw = 120

@@ -25,6 +25,7 @@ end
 
 function main:enter()
 	love.mouse.setVisible(false)
+	love.mouse.setGrab(true)
 end
 
 function main:leave()
