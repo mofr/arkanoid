@@ -17,22 +17,20 @@ local current_index
 level.blocks = {}
 local blocks = level.blocks
 
-local function addBlock(x, y)
+function level.add_block(x, y, w, h)
 	local block = {}
 	block.x = x
 	block.y = y
+	block.w = w
+	block.h = h
 	table.insert(blocks, block)
 end
-
-local level_interface = {
-	addBlock = addBlock
-}
 
 local function load_level(index)
 	local level = levels[index]
 	current.leave()
 	current = require ('levels/'..level)
-	current.enter(level_interface)
+	current.enter()
 	current_index = index
 end
 
@@ -51,7 +49,7 @@ end
 local function draw_blocks()
 	g.setColor(255,255,255)
 	for _, block in ipairs(blocks) do
-		g.rectangle('fill', block.x, block.y, 50, 20)
+		g.rectangle('fill', block.x, block.y, block.w, block.h)
 	end
 end
 
