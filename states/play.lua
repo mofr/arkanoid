@@ -10,60 +10,12 @@ local explosions = {}
 local gravity = true
 local grid_visible = false
 
-local balls = {}
-
 local board = {}
 board.x = 0
 board.y = 0
 board.w = 100
 board.m = 3000
 board.pole = 0
-
-local function reset()
-	balls = {}
-	board.x = g.getWidth()/2
-
-	local ball = newBall()
-	ball.x = 200
-	ball.y = 200
-	ball.velx = 0--300
-	ball.vely = 0--300
-	ball.r = 10
-	ball.pole = 1
---[[
-	ball = newBall()
-	ball.x = 300
-	ball.velx = 0--50
-	ball.vely = 0--160
-	ball.pole = 1
-]]
-	ball = newBall()
-	ball.x = 500
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1
---[[
-	ball = newBall()
-	ball.x = 600
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1
-
-	ball = newBall()
-	ball.x = 650
-	ball.velx = 0--120
-	ball.vely = 0--200
-	ball.ps = newBallPS()
-	ball.m = 1	
-	ball.pole = -1]]
-
-	game.level.first()
-end
-
 
 function menu_enter()
 	in_menu = true
@@ -87,7 +39,7 @@ function main:enter()
 	in_menu = false
 	love.mouse.setVisible(false)
 	love.mouse.setGrab(true)
-	reset()
+	game.level.first()
 end
 
 function main:leave()
@@ -101,34 +53,6 @@ function main:keypressed(key)
 		if key == 'g' then gravity = not gravity end
 		if key == 't' then grid_visible = not grid_visible end
 	end
-end
-
-function newBall(x, y, velx, vely, r, m)
-	local ball = {}
-	table.insert(balls, ball)
-
-	r = r or 10
-
-	ball.x = x or 100
-	ball.y = y or 100
-	ball.velx = velx or 0
-	ball.vely = vely or 0
-	ball.r = r
-	ball.m = m or 400
-	ball.pole = 0
-	ball.ax = 0
-	ball.ay = 0
-
-	ball.phys = {}
-	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
-	ball.phys.b:setMass(10)
-	ball.phys.s = love.physics.newCircleShape(r)
-	ball.phys.f = love.physics.newFixture(ball.phys.b, ball.phys.s)
-	ball.phys.f:setFriction(0)
-	ball.phys.f:setRestitution(1)
---	ball.phys.b:applyLinearImpulse(230, 230)
-
-	return ball
 end
 
 function newBallPS()
@@ -200,7 +124,7 @@ local function update_level(dt)
 		board.pole = 0
 	end
 
-	for i, ball in ipairs(balls) do
+	for i, ball in ipairs(game.level.balls) do
 		if gravity then
 			local dx = board.x - ball.phys.b:getX()
 			local dy = board.y - ball.phys.b:getY()
@@ -310,25 +234,6 @@ local function draw_grid()
 	end
 end
 
-local function draw_balls()
-	for _, ball in ipairs(balls) do
-		if ball.ps then
-			g.setBlendMode("additive")
-			g.draw(ball.ps, 0, 0)
-		else
-			if ball.pole == 1 then
-				g.setColor(255, 0, 0)
-			elseif ball.pole == -1 then
-				g.setColor(0, 0, 255)
-			else
-				g.setColor(255, 255, 255)
-			end
-			g.circle("fill", ball.phys.b:getX(), ball.phys.b:getY(), ball.r, 32)
---			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
-		end
-	end
-end
-
 local function draw_board()
 	if board.pole == 1 then
 		g.setColor(255, 0, 0)
@@ -348,7 +253,6 @@ local function draw_level()
 	if grid_visible then draw_grid() end
 	game.level.draw()
 	draw_board()
-	draw_balls()
 	draw_effects()
 end
 
