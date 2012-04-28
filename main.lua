@@ -49,4 +49,11 @@ function love.keypressed(key, code)
 	if key == 'f12' then g.toggleFullscreen() end
 	gs.keypressed(key, code)
 	gui.core.keyboard.pressed(key, code)
+
+--DEBUG
+	if key == 'k' then
+		if #game.level.blocks > 0 then
+			table.remove(game.level.blocks, #game.level.blocks)
+		end
+	end
 end
