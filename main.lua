@@ -1,7 +1,9 @@
 
 function love.load()
+	dofile 'math.lua'
 	gs = require 'hump/gamestate'
 	timer = require 'hump/timer'
+	vector = require 'hump/vector'
 	gui = require 'quickie'
 	g = love.graphics
 

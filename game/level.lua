@@ -109,7 +109,10 @@ local function draw_blocks()
 end
 
 local function draw_balls()
+	local x, y
 	for _, ball in ipairs(level.balls) do
+		x, y = ball.phys.b:getX(), ball.phys.b:getY()
+		
 		if ball.ps then
 			g.setBlendMode("additive")
 			g.draw(ball.ps, 0, 0)
@@ -121,9 +124,12 @@ local function draw_balls()
 			else
 				g.setColor(255, 255, 255)
 			end
-			g.circle("fill", ball.phys.b:getX(), ball.phys.b:getY(), ball.r, 32)
---			g.line(ball.x, ball.y, ball.x+ball.ax, ball.y+ball.ay)
+			g.circle("fill", x, y, ball.r, 32)
 		end
+		
+		local v = vector(ball.phys.b:getLinearVelocity())
+		g.setColor(255,255,255)
+		g.print(v:len(), x, y-ball.r*3)
 	end
 end
 
@@ -138,8 +144,26 @@ local function check_win()
 	end
 end
 
+local min_vel = 50
+
 function level.update(dt)
 	check_win()
+
+	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
+	for _, ball in ipairs(level.balls) do
+		local v = vector(ball.phys.b:getLinearVelocity())
+		local len = v:len()
+
+		if len > 1000 then
+			v = v:normalized()*1000
+			ball.phys.b:setLinearVelocity(v:unpack())
+		else
+			v = v:clone()
+			if math.abs(v.x) < min_vel then v.x = min_vel*math.sign(v.x) end
+			if math.abs(v.y) < min_vel then v.y = min_vel*math.sign(v.y) end
+			ball.phys.b:setLinearVelocity(v:unpack())
+		end
+	end
 end
 
 function level.draw()

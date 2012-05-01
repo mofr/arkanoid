@@ -23,6 +23,7 @@ local function create_balls()
 	ball.vely = 0--160
 	ball.pole = 1
 ]]
+--[[
 	ball = game.level.add_ball()
 	ball.x = 500
 	ball.velx = 0--120
@@ -30,6 +31,7 @@ local function create_balls()
 	ball.ps = newBallPS()
 	ball.m = 1	
 	ball.pole = -1
+]]
 --[[
 	ball = newBall()
 	ball.x = 600
