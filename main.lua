@@ -1,18 +1,22 @@
 
 function love.load()
-	dofile 'math.lua'
-	gs = require 'hump/gamestate'
-	timer = require 'hump/timer'
-	vector = require 'hump/vector'
-	gui = require 'quickie'
+	dofile 'lib/math.lua'
+	gs = require 'lib.hump.gamestate'
+	timer = require 'lib.hump.timer'
+	vector = require 'lib.hump.vector'
+	gui = require 'lib.quickie'
 	g = love.graphics
 
 	game = {}
-	game.state = {}
-	game.state.menu = require 'states/main_menu'
-	game.state.play = require 'states/play'
-	game.level = require 'game/level'
 	game.world = love.physics.newWorld(0, 0)
+	game.ball = require 'game.ball'
+	game.block = require 'game.block'
+	game.level = require 'game.level'
+
+	game.state = {}
+	game.state.menu = require 'states.main_menu'
+	game.state.play = require 'states.play'
+
 	love.physics.setMeter(30)
 	gs.switch(game.state.menu)
 
@@ -43,8 +47,12 @@ function love.draw()
 	gs.draw()
 	gui.core.draw()
 
+	local debug_text = ''
+	debug_text = debug_text .. love.timer.getFPS()..' fps';
+	debug_text = debug_text .. '\n' .. game.world:getBodyCount() .. ' bodies'
+	debug_text = debug_text .. '\n' .. #game.level.blocks .. ' blocks'
 	g.setColor(255,255,255)
-	g.print(love.timer.getFPS()..' fps', 5, 5)
+	g.print(debug_text, 5, 5)
 end
 
 function love.keypressed(key, code)
