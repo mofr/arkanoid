@@ -159,15 +159,13 @@ function level.update(dt)
 		end
 	end
 
-	local to_remove = {}
-	for i, block in ipairs(level.blocks) do
+	local block
+	for i = #level.blocks, 1, -1 do
+		block = level.blocks[i]
 		if block.dead then
 			block:destroy()
-			to_remove[#to_remove+1] = i
+			table.remove( level.blocks, i )
 		end
-	end
-	for _, i in ipairs(to_remove) do
-		table.remove( level.blocks, i )
 	end
 end
 
