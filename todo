@@ -1,7 +1,7 @@
 +grab mouse
 
 levels:
-	blocks: position, properties
+	blocks: +position, properties
 	bonuses
 	style: board, balls, blocks, gui, background
 
@@ -10,9 +10,22 @@ objects interaction:
 	board and balls
 	+balls and blocks
 	balls and floor
-balls, blocks as objects with methods, not plain tables
++balls, blocks as objects with methods, not plain tables
+player:
+	score
+	power
+blocks health
+timer groups
+drawing routines:
+	balls
+	blocks
+	background
+	game interface (score, borders, power)
+help (f1) with controls
+
 
 Идеи:
+урон наносимый блокам зависит от силы удара шариком (масса, скорость)
 возможность ракетки создавать поле влияющее на шарики
 ракетка обладает "силой", которая необходима для генерации поля
 "сила" автоматически восстанавливается
