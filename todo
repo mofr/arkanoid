@@ -15,7 +15,7 @@ player:
 	score
 	power
 blocks health
-timer instances
++timer instances
 drawing routines:
 	balls
 	blocks

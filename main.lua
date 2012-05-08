@@ -2,7 +2,7 @@
 function love.load()
 	dofile 'lib/math.lua'
 	gs = require 'lib.hump.gamestate'
-	timer = require 'lib.hump.timer'
+	Timer = require 'lib.hump.timer'
 	vector = require 'lib.hump.vector'
 	gui = require 'lib.quickie'
 	g = love.graphics
@@ -39,7 +39,7 @@ function love.load()
 end
 
 function love.update(dt)
-	timer.update(dt)
+	Timer.update(dt)
 	gs.update(dt)
 end
 

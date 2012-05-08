@@ -16,6 +16,7 @@ local current_index
 level.win = false
 level.blocks = {}
 level.balls = {}
+level.timer = Timer()
 
 beginContact = __NULL__
 function endContact(a, b, c)
@@ -131,7 +132,7 @@ local function check_win()
 	if not level.win then
 		if level.is_win() then
 			level.win = true
-			timer.add(3, function()
+			level.timer:add(3, function()
 				level.next()
 			end)
 		end
@@ -141,6 +142,7 @@ end
 local min_vel = 50
 
 function level.update(dt)
+	level.timer:update(dt)
 	check_win()
 
 	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
