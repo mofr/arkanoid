@@ -2,6 +2,7 @@ local level = {}
 
 local levels = {'1', '2'}
 
+-- level instances
 local __NULL__ = function() end
 function level.new()
 	return {
@@ -12,11 +13,15 @@ end
 
 local current = level.new()
 local current_index
+--
+
+local Area = require 'game.level_area'
 
 level.win = false
 level.blocks = {}
 level.balls = {}
 level.timer = Timer()
+level.area = Area(10, 10, g.getWidth()-10, g.getHeight()-30)
 
 beginContact = __NULL__
 function endContact(a, b, c)
@@ -54,13 +59,13 @@ function level.reset()
 end
 
 function level.add_block(...)
-	local block = game.block.new(...)
+	local block = Block(...)
 	table.insert(level.blocks, block)
 	return ball
 end
 
 function level.add_ball(...)
-	local ball = game.ball.new(...)
+	local ball = Ball(...)
 	table.insert(level.balls, ball)
 	return ball
 end
@@ -178,6 +183,7 @@ function level.draw()
 		g.setColor(255, 255, 255)
 		g.print('Level complete!', g.getWidth()/2, g.getHeight()/2)
 	end
+	level.area:debugDraw()
 end
 
 return level

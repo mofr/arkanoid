@@ -32,7 +32,7 @@ function menu:update(dt)
 end
 
 function menu:keypressed(key)
-	if key == 'escape' then menu.resume() end
+	if key == 'escape' or key == 'p' then menu.resume() end
 end
 
 return menu

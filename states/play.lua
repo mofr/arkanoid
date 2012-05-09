@@ -49,7 +49,7 @@ function main:keypressed(key)
 	if in_menu then
 		menu:keypressed(key)
 	else
-		if key == 'escape' then menu_enter() end
+		if key == 'escape' or key == 'p' then menu_enter() end
 		if key == 'g' then gravity = not gravity end
 		if key == 't' then grid_visible = not grid_visible end
 	end
@@ -142,67 +142,7 @@ local function update_level(dt)
 			ball.ps:update(dt)
 		end
 	end
---[[	
-	--balls
-	for i, ball in ipairs(balls) do
-		--apply gravity to acceleration
-		ball.ax = 0
-		ball.ay = 0
-		if gravity then
-			local ax
-			local ay
-			for k, ball2 in ipairs(balls) do
-				if k ~= i then
-					ax, ay = calcGravity(ball, ball2)
-					ball.ax = ball.ax + ax
-					ball.ay = ball.ay + ay
-				end
-			end
 
-			ax, ay = calcGravity(ball, board)
-
-			ball.ax = ball.ax + ax
-			ball.ay = ball.ay + ay
-		end
-
-		--apply acceleration to velocity
-		ball.velx = ball.velx + ball.ax*dt/ball.m
-		ball.vely = ball.vely + ball.ay*dt/ball.m
-
-		--limit velocity
-		if ball.velx > w then ball.velx = w end
-		if ball.vely > h then ball.vely = h end
-		
-		--apply velocity to position
-		ball.x = ball.x + dt*ball.velx
-		ball.y = ball.y + dt*ball.vely
-
-		--check collisions
-		local powerx = math.abs(ball.velx) / 500
-		local powery = math.abs(ball.vely) / 500
-		if ball.x-ball.r <= 0 then 
-			ball.x = ball.r; ball.velx = -ball.velx; 
-			newExplosion(0, ball.y, 0, powerx)
-		end
-		if ball.y-ball.r <= 0 then 
-			ball.y = ball.r; ball.vely = -ball.vely;
-			newExplosion(ball.x, 0, math.pi/2, powery)
-		end
-		if ball.x+ball.r >= w then 
-			ball.x = w-ball.r; ball.velx = -ball.velx;
-			newExplosion(w, ball.y, math.pi, powerx)
-		end
-		if ball.y+ball.r >= h then 
-			ball.y = h-ball.r; ball.vely = -ball.vely;
-			newExplosion(ball.x, h, -math.pi/2, powery)
-		end
-
-		if ball.ps then
-			ball.ps:setPosition(ball.x, ball.y)
-			ball.ps:update(dt)
-		end
-	end
-]]
 	--remove old explosions
 	for i, e in ipairs(explosions) do 
 		if not e:isActive() then
@@ -249,20 +189,11 @@ local function draw_effects()
 	for _, e in ipairs(explosions) do g.draw(e, 0, 0) end
 end
 
-local function draw_level()
+function main:draw()
 	if grid_visible then draw_grid() end
 	game.level.draw()
 	draw_board()
 	draw_effects()
-end
-
-function main:draw()
-	draw_level()
-
-	g.setColor(255,255,255)
---	love.graphics.circle("fill", ball.b:getX(),ball.b:getY(), ball.s:getRadius())
---	love.graphics.polygon("line", floor.b:getWorldPoints(floor.s:getPoints()))
-	love.graphics.line(outline.b:getWorldPoints(outline.s:getPoints()))
 end
 
 return main

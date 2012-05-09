@@ -1,11 +1,13 @@
 +grab mouse
 
 levels:
-	blocks: +position, properties
+	+blocks: +position, properties
 	bonuses
 	style: board, balls, blocks, gui, background
 
-world(level) bounds
++world(level) bounds
+board:
+	shape, position
 objects interaction:
 	board and balls
 	+balls and blocks

@@ -49,8 +49,8 @@ local b = block_creator(block_w, block_h)
 function level.enter()
 	local count_x = 7
 	local count_y = 7
-	local left = g.getWidth()/2-count_x*(block_w+space)/2
-	local top = g.getHeight()/5
+	local left = game.level.area.w/2-count_x*(block_w+space)/2
+	local top = game.level.area.h/5
 
 	for x = 0,count_x-1 do
 		for y = 0,count_y-1 do
