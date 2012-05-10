@@ -11,6 +11,7 @@ function love.load()
 
 	Ball = require 'game.ball'
 	Block = require 'game.block'
+	Paddle = require 'game.paddle'
 
 	game = {}
 	game.world = love.physics.newWorld(0, 0)

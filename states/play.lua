@@ -10,12 +10,7 @@ local explosions = {}
 local gravity = true
 local grid_visible = false
 
-local board = {}
-board.x = 0
-board.y = 0
-board.w = 100
-board.m = 3000
-board.pole = 0
+local paddle = Paddle()
 
 function menu_enter()
 	in_menu = true
@@ -109,36 +104,33 @@ local function update_level(dt)
 	local w = g.getWidth()
 	local h = g.getHeight()
 
-	--board position
-	board.y = h
-	board.x = love.mouse.getX()-board.w/2
-	if board.x < 0 then board.x = 0 end
-	if board.x+board.w > w then board.x = w-board.w end
+	--paddle position
+	paddle:moveTo(love.mouse.getX())
 
-	--board pole
+	--paddle pole
 	if love.mouse.isDown('l') then
-		board.pole = -1
+		paddle.pole = -1
 	elseif love.mouse.isDown('r') then
-		board.pole = 1
+		paddle.pole = 1
 	else
-		board.pole = 0
+		paddle.pole = 0
 	end
 
 	for i, ball in ipairs(game.level.balls) do
 		if gravity then
-			local dx = board.x - ball.phys.b:getX()
-			local dy = board.y - ball.phys.b:getY()
+			local dx = paddle.x+paddle.w/2 - ball:getX()
+			local dy = paddle.y - ball:getY()
 			if math.abs(dx) < 5 then dx = 500 end
 			if math.abs(dy) < 5 then dy = 500 end
 			local d = math.sqrt(dx*dx+dy*dy)
-			local koef = -0.3*ball.m*board.m/d/d * ball.pole*board.pole
+			local koef = -0.3*ball.m*paddle.m/d/d * ball.pole*paddle.pole
 			local fx = dx*koef
 			local fy = dy*koef
 			ball.phys.b:applyForce(fx, fy)
 		end
 	
 		if ball.ps then
-			ball.ps:setPosition(ball.phys.b:getX(), ball.phys.b:getY())
+			ball.ps:setPosition(ball:getX(), ball:getY())
 			ball.ps:update(dt)
 		end
 	end
@@ -174,17 +166,6 @@ local function draw_grid()
 	end
 end
 
-local function draw_board()
-	if board.pole == 1 then
-		g.setColor(255, 0, 0)
-	elseif board.pole == -1 then
-		g.setColor(0, 0, 255)
-	else
-		g.setColor(255, 255, 255)
-	end
-	g.rectangle("fill", board.x, board.y-16, board.w, 16)
-end
-
 local function draw_effects()
 	for _, e in ipairs(explosions) do g.draw(e, 0, 0) end
 end
@@ -192,7 +173,7 @@ end
 function main:draw()
 	if grid_visible then draw_grid() end
 	game.level.draw()
-	draw_board()
+	paddle:debugDraw()
 	draw_effects()
 end
 

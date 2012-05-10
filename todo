@@ -6,12 +6,13 @@ levels:
 	style: board, balls, blocks, gui, background
 
 +world(level) bounds
-board:
-	shape, position
++paddle:
+	+shape, +position
 objects interaction:
-	board and balls
+	+paddle and balls
 	+balls and blocks
 	balls and floor
+	custom collision dispatchers
 +balls, blocks as objects with methods, not plain tables
 player:
 	score
