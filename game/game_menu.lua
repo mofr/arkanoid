@@ -33,7 +33,7 @@ function menu:update(dt)
 end
 
 function menu:draw()
-	g.setColor(0, 0, 0, 200)
+	g.setColor(0, 0, 0, 210)
 	g.rectangle('fill', 0, 0, g.getWidth(), g.getHeight())
 end
 

@@ -10,7 +10,7 @@ function love.load()
 	love.physics.setMeter(30)
 
 	Font = {}
-	Font.big = g.newFont(30)
+	Font.big = g.newFont(50)
 	Font.gui = g.newFont(20)
 	Font.normal = g.newFont(13)
 
