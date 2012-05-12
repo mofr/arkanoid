@@ -55,6 +55,7 @@ end
 
 function level.reset()
 	level.win = false
+	level.timer:clear()
 	reset_blocks()
 end
 
@@ -181,7 +182,10 @@ function level.draw()
 	draw_balls()
 	if level.win then
 		g.setColor(255, 255, 255)
-		g.print('Level complete!', g.getWidth()/2, g.getHeight()/2)
+		g.setFont(Font.big)
+		local text = 'Level complete!'
+		local f = g.getFont()
+		g.print(text, (g.getWidth()-f:getWidth(text))/2, (g.getHeight()-f:getHeight(text))/2)
 	end
 	level.area:debugDraw()
 end

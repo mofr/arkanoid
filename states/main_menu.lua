@@ -8,7 +8,7 @@ function menu:enter()
 	love.mouse.setGrab(false)
 end
 
-local bw = 120
+local bw = 150
 local bh = 40
 local spacing = 10
 

@@ -1,6 +1,6 @@
 local main = gs.new()
 
-local menu = require 'game/game_menu'
+local menu = require 'game.game_menu'
 local in_menu = false
 
 local particle = g.newImage('media/flare.png')
@@ -175,6 +175,8 @@ function main:draw()
 	game.level.draw()
 	paddle:debugDraw()
 	draw_effects()
+
+	if in_menu then menu:draw() end
 end
 
 return main

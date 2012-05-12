@@ -9,6 +9,11 @@ function love.load()
 	g = love.graphics
 	love.physics.setMeter(30)
 
+	Font = {}
+	Font.big = g.newFont(30)
+	Font.gui = g.newFont(20)
+	Font.normal = g.newFont(13)
+
 	Ball = require 'game.ball'
 	Block = require 'game.block'
 	Paddle = require 'game.paddle'
@@ -31,13 +36,16 @@ end
 
 function love.draw()
 	gs.draw()
+	g.setFont(Font.gui)
 	gui.core.draw()
 
+--DEBUG
 	local debug_text = ''
 	debug_text = debug_text .. love.timer.getFPS()..' fps';
 	debug_text = debug_text .. '\n' .. game.world:getBodyCount() .. ' bodies'
 	debug_text = debug_text .. '\n' .. #game.level.blocks .. ' blocks'
 	g.setColor(255,255,255)
+	g.setFont(Font.normal)
 	g.print(debug_text, 5, 5)
 end
 
@@ -47,9 +55,5 @@ function love.keypressed(key, code)
 	gui.core.keyboard.pressed(key, code)
 
 --DEBUG
-	if key == 'k' then
-		if #game.level.blocks > 0 then
-			table.remove(game.level.blocks, #game.level.blocks)
-		end
-	end
+	if key == 'f5' then game.level.next() end
 end
