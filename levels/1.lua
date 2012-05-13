@@ -1,8 +1,7 @@
 local level = game.level.new()
 
 local function create_balls()
-	local ball = game.level.add_ball(g.getWidth()/2, g.getHeight()*4/5)
-	ball.pole = 1
+	
 --[[
 	ball = game.level.add_ball()
 	ball.x = 300

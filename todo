@@ -11,8 +11,11 @@ levels:
 objects interaction:
 	+paddle and balls
 	+balls and blocks
-	balls and floor
+	+balls and floor
 	custom collision dispatchers
+modules:
+	collision dispatchers (kill block, ball death on floor)
+	state monitors (win #blocks=0, )
 +balls, blocks as objects with methods, not plain tables
 player:
 	score

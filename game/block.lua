@@ -48,4 +48,8 @@ function Block:getHeight()
 	return self.h
 end
 
+function Block:draw()
+	g.rectangle('fill', self:getX(), self:getY(), self:getSize())
+end
+
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})

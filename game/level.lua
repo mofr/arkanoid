@@ -16,19 +16,37 @@ local current_index
 --
 
 local Area = require 'game.level_area'
+local Floor = require 'game.floor'
+local Death = require 'game.death'
+local LevelWin = require 'game.level_win'
 
-level.win = false
+level.win = LevelWin()
+level.death = Death()
 level.blocks = {}
 level.balls = {}
 level.timer = Timer()
 level.area = Area(10, 10, g.getWidth()-10, g.getHeight()-30)
+level.floor = Floor(g.getHeight()-40)
 
-beginContact = __NULL__
+function beginContact(a, b, c)
+	local d1 = a:getUserData()
+	local d2 = b:getUserData()
+end
+
 function endContact(a, b, c)
 	local d1 = a:getUserData()
 	local d2 = b:getUserData()
 	if d1 and d1.block then d1.block.dead = true end
 	if d2 and d2.block then d2.block.dead = true end
+
+	if d1 and d2 then
+		if d1.floor and d2.ball then
+			d2.ball.dead = true
+		end
+		if d1.ball and d2.floor then
+			d1.ball.dead = true
+		end
+	end
 end
 
 function preSolve(a, b, c)
@@ -54,7 +72,8 @@ function reset_balls()
 end
 
 function level.reset()
-	level.win = false
+	level.win:reset()
+	level.death:reset()
 	level.timer:clear()
 	reset_blocks()
 end
@@ -71,10 +90,6 @@ function level.add_ball(...)
 	return ball
 end
 
-function level.is_win()
-	return #level.blocks == 0
-end
-
 local function load_level(index)
 	local level_name = levels[index]
 	current.leave()
@@ -84,8 +99,15 @@ local function load_level(index)
 	current_index = index
 end
 
-function level.first()
+function level.respawn()
 	reset_balls()
+
+	local ball = game.level.add_ball(g.getWidth()/2, g.getHeight()*4/5)
+	ball.pole = 1
+end
+
+function level.first()
+	level.respawn()
 	load_level(1)
 end
 
@@ -102,54 +124,12 @@ function level.next()
 	end
 end
 
-local function draw_blocks()
-	g.setColor(255,255,255)
-	for _, block in ipairs(level.blocks) do
-		g.rectangle('fill', block:getX(), block:getY(), block:getSize())
-	end
-end
-
-local function draw_balls()
-	local x, y
-	for _, ball in ipairs(level.balls) do
-		x, y = ball:getPosition()
-		
-		if ball.ps then
-			g.setBlendMode("additive")
-			g.draw(ball.ps, 0, 0)
-		else
-			if ball.pole == 1 then
-				g.setColor(255, 0, 0)
-			elseif ball.pole == -1 then
-				g.setColor(0, 0, 255)
-			else
-				g.setColor(255, 255, 255)
-			end
-			g.circle("fill", x, y, ball.r, 32)
-		end
-		
---		local v = vector(ball.phys.b:getLinearVelocity())
---		g.setColor(255,255,255)
---		g.print(v:len(), x, y-ball.r*3)
-	end
-end
-
-local function check_win()
-	if not level.win then
-		if level.is_win() then
-			level.win = true
-			level.timer:add(3, function()
-				level.next()
-			end)
-		end
-	end
-end
-
 local min_vel = 50
 
 function level.update(dt)
 	level.timer:update(dt)
-	check_win()
+	level.win:update(dt)
+	level.death:update(dt)
 
 	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
 	for _, ball in ipairs(level.balls) do
@@ -175,19 +155,39 @@ function level.update(dt)
 			table.remove( level.blocks, i )
 		end
 	end
+
+	local ball
+	for i = #level.balls, 1, -1 do
+		ball = level.balls[i]
+		if ball.dead then
+			ball:destroy()
+			table.remove( level.balls, i )
+		end
+	end
+end
+
+local function draw_blocks()
+	g.setColor(255,255,255)
+	for _, block in ipairs(level.blocks) do
+		block:draw()
+	end
+end
+
+local function draw_balls()
+	for _, ball in ipairs(level.balls) do
+		ball:draw()
+	end
 end
 
 function level.draw()
 	draw_blocks()
 	draw_balls()
-	if level.win then
-		g.setColor(255, 255, 255)
-		g.setFont(Font.big)
-		local text = 'Level complete!'
-		local f = g.getFont()
-		g.print(text, (g.getWidth()-f:getWidth(text))/2, (g.getHeight()-f:getHeight(text))/2)
-	end
+
+	level.win:draw()
+	level.death:draw()
+
 	level.area:debugDraw()
+	level.floor:debugDraw()
 end
 
 return level

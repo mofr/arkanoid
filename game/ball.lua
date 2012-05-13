@@ -47,4 +47,26 @@ function Ball:getY()
 	return self.phys.b:getY()
 end
 
+function Ball:draw()
+	local x, y = self:getPosition()
+		
+	if self.ps then
+		g.setBlendMode("additive")
+		g.draw(self.ps, 0, 0)
+	else
+		if self.pole == 1 then
+			g.setColor(255, 0, 0)
+		elseif self.pole == -1 then
+			g.setColor(0, 0, 255)
+		else
+			g.setColor(255, 255, 255)
+		end
+		g.circle("fill", x, y, self.r, 32)
+	end
+		
+--	local v = vector(ball.phys.b:getLinearVelocity())
+--	g.setColor(255,255,255)
+--	g.print(v:len(), x, y-ball.r*3)
+end
+
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})
