@@ -8,15 +8,20 @@ levels:
 +world(level) bounds
 +paddle:
 	+shape, +position
+	round shape
 objects interaction:
 	+paddle and balls
 	+balls and blocks
 	+balls and floor
+	eliminate balls collisions
 	custom collision dispatchers
 modules:
-	collision dispatchers (kill block, ball death on floor)
 	state monitors (win #blocks=0, )
+	event, collision dispatchers (kill block, ball death on floor, skill meters, drop generation)
+	bonuses
 +balls, blocks as objects with methods, not plain tables
+pause:
+	mouse pause
 player:
 	score
 	power
@@ -29,6 +34,7 @@ drawing routines:
 	game interface (score, borders, power)
 help (f1) with controls
 bonuses
+balls pathtracing
 
 
 Идеи:
@@ -46,6 +52,9 @@ bonuses
 "поле": увеличение силы
 ракетка: размер, радиус кривизны верхней поверхности, форма, внешний вид
 очки
+направление отскока мячей
+пушка
+
 
 Доп. объекты:
 черные дыры, засасывающие шарики, игрок мешает этому с помощью поля
