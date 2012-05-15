@@ -8,7 +8,8 @@ levels:
 +world(level) bounds
 +paddle:
 	+shape, +position
-	round shape
+	+round shape
+	try dynamic body
 objects interaction:
 	+paddle and balls
 	+balls and blocks
@@ -25,6 +26,7 @@ pause:
 player:
 	score
 	power
+	paddle
 blocks health
 +timer instances
 drawing routines:

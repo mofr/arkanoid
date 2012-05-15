@@ -10,7 +10,7 @@ local explosions = {}
 local gravity = true
 local grid_visible = false
 
-local paddle = Paddle()
+paddle = Paddle()
 
 function menu_enter()
 	in_menu = true

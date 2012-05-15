@@ -1,6 +1,53 @@
 local Paddle = {}
 Paddle.__index = Paddle
 
+function build_shape(w, x, y, phi)
+	local shape = {}
+	table.insert(shape, 0)
+	table.insert(shape, 0)
+	table.insert(shape, w)
+	table.insert(shape, 0)
+
+	if phi <= 0 then
+		--rectangle shape
+		table.insert(shape, w)
+		table.insert(shape, -y)
+		table.insert(shape, 0)
+		table.insert(shape, -y)
+		return shape
+	end
+
+	local points = 10
+	local r = w/2/math.sin(phi/2)
+	y = y - (r^2-w^2/4)^0.5
+	local step = phi/(points-1)
+	local ang = (math.pi-phi)/2
+
+	for i=1,points do
+		local p = vector(r, 0):rotated(ang)
+		table.insert(shape, p.x+x)
+		table.insert(shape, -p.y-y)
+		ang = ang + step
+	end
+
+	return shape
+end
+
+local function createPhysics(paddle)
+	local phys = {}
+--	phys.b = love.physics.newBody(game.world, paddle.x+paddle.w/2, paddle.y-paddle.h/2, 'static')
+--	phys.s = love.physics.newRectangleShape(paddle.w, paddle.h)
+	phys.b = love.physics.newBody(game.world, paddle.x, paddle.y, 'static')
+	phys.s = love.physics.newChainShape(true, unpack(build_shape(paddle.w,paddle.w/2,paddle.h/2, paddle.phi)) )
+
+	phys.f = love.physics.newFixture(phys.b, phys.s)
+	phys.f:setFriction(0)
+	phys.f:setRestitution(1)
+	phys.f:setUserData({paddle=paddle})
+
+	return phys
+end
+
 local function new()
 	local paddle = {}
 
@@ -15,23 +62,30 @@ local function new()
 	paddle.h = h
 	paddle.pole = 0
 	paddle.m = 3000
+	paddle.phi = math.pi/3
 
-	paddle.phys = {}
---	paddle.phys.b = love.physics.newBody(game.world, paddle.x+paddle.w/2, paddle.y-paddle.h/2, 'static')
---	paddle.phys.s = love.physics.newRectangleShape(paddle.w, paddle.h)
-	paddle.phys.b = love.physics.newBody(game.world, x, y, 'static')
-	paddle.phys.s = love.physics.newChainShape(true, 0,-h/2, 0,0, w,0, w,-h/2,  w*3/4,-h, w/4, -h)
-
-	paddle.phys.f = love.physics.newFixture(paddle.phys.b, paddle.phys.s)
-	paddle.phys.f:setFriction(0)
-	paddle.phys.f:setRestitution(1)
-	paddle.phys.f:setUserData({paddle=paddle})
+	paddle.phys = createPhysics(paddle)
 
 	return setmetatable(paddle, Paddle)
 end
 
+local function updateShape(paddle)
+	paddle:destroy()
+	paddle.phys = createPhysics(paddle)
+end
+
 function Paddle:destroy()
 	self.phys.b:destroy()
+end
+
+function Paddle:setShapeAngle(phi)
+	self.phi = math.clamp(phi, 0, math.pi)
+	updateShape(self)
+end
+
+function Paddle:setWidth(w)
+	self.w = math.max(w, 10)
+	updateShape(self)
 end
 
 function Paddle:getPosition()
@@ -56,6 +110,10 @@ end
 
 function Paddle:getHeight()
 	return self.h
+end
+
+function Paddle:getShapeAngle()
+	return self.phi
 end
 
 function Paddle:moveTo(x)

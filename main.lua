@@ -1,10 +1,11 @@
-
 function love.load()
 	dofile 'lib/math.lua'
 	gs = require 'lib.hump.gamestate'
 	Timer = require 'lib.hump.timer'
 	vector = require 'lib.hump.vector'
 	gui = require 'lib.quickie'
+
+	show_debug = false
 
 	g = love.graphics
 	love.physics.setMeter(30)
@@ -40,13 +41,15 @@ function love.draw()
 	gui.core.draw()
 
 --DEBUG
-	local debug_text = ''
-	debug_text = debug_text .. love.timer.getFPS()..' fps';
-	debug_text = debug_text .. '\n' .. game.world:getBodyCount() .. ' bodies'
-	debug_text = debug_text .. '\n' .. #game.level.blocks .. ' blocks'
-	g.setColor(255,255,255)
-	g.setFont(Font.normal)
-	g.print(debug_text, 5, 5)
+	if show_debug then
+		local debug_text = ''
+		debug_text = debug_text .. love.timer.getFPS()..' fps';
+		debug_text = debug_text .. '\n' .. game.world:getBodyCount() .. ' bodies'
+		debug_text = debug_text .. '\n' .. #game.level.blocks .. ' blocks'
+		g.setColor(255,255,255)
+		g.setFont(Font.normal)
+		g.print(debug_text, 5, 5)
+	end
 end
 
 function love.keypressed(key, code)
@@ -55,5 +58,19 @@ function love.keypressed(key, code)
 	gui.core.keyboard.pressed(key, code)
 
 --DEBUG
+	if key == 'f2' then show_debug = not show_debug end
 	if key == 'f5' then game.level.next() end
+	if key == 'kp+' then paddle:setWidth(paddle:getWidth() + 20) end
+	if key == 'kp-' then paddle:setWidth(paddle:getWidth() - 20) end
+end
+
+function love.mousepressed(x, y, button)
+
+--DEBUG
+	if button == 'wu' then
+		paddle:setShapeAngle( paddle:getShapeAngle() + math.pi/10 )
+	end
+	if button == 'wd' then
+		paddle:setShapeAngle( paddle:getShapeAngle() - math.pi/10 )
+	end
 end

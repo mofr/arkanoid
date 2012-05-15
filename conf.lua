@@ -8,6 +8,4 @@ function love.conf(t)
 	t.screen.height = 768
 	t.screen.vsync = false
 	t.screen.fullscreen = false
-	t.modules.joystick = false
-	t.modules.physics = true
 end
