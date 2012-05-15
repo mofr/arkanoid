@@ -20,6 +20,7 @@ modules:
 	state monitors (win #blocks=0, )
 	event, collision dispatchers (kill block, ball death on floor, skill meters, drop generation)
 	bonuses
+	levels
 +balls, blocks as objects with methods, not plain tables
 pause:
 	mouse pause
