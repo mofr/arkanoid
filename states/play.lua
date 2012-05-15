@@ -120,13 +120,13 @@ local function update_level(dt)
 		if gravity then
 			local dx = paddle.x+paddle.w/2 - ball:getX()
 			local dy = paddle.y - ball:getY()
-			if math.abs(dx) < 5 then dx = 500 end
-			if math.abs(dy) < 5 then dy = 500 end
 			local d = math.sqrt(dx*dx+dy*dy)
-			local koef = -0.3*ball.m*paddle.m/d/d * ball.pole*paddle.pole
-			local fx = dx*koef
-			local fy = dy*koef
-			ball.phys.b:applyForce(fx, fy)
+			local fx, fy
+			if d ~= 0 then
+				local koef = -0.3*ball.m*paddle.m/d/d * ball.pole*paddle.pole
+				local fx, fy = dx*koef, dy*koef
+				ball.phys.b:applyForce(fx, fy)
+			end
 		end
 	
 		if ball.ps then
