@@ -18,9 +18,9 @@ function menu:update(dt)
 	local top = h/3
 
 	if gui.Button('Start game', w/2-bw/2,top, bw,bh) then
-		gs.switch(game.state.play)
+		game.start()
 	end
-	
+
 	top = top + bh + spacing
 	if gui.Button('Exit', w/2-bw/2,top, bw,bh) then
 		love.event.push('quit')

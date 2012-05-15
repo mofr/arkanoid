@@ -15,19 +15,14 @@ function love.load()
 	Font.gui = g.newFont(20)
 	Font.normal = g.newFont(13)
 
-	Ball = require 'game.ball'
-	Block = require 'game.block'
-	Paddle = require 'game.paddle'
+	require 'game.core'
 
-	game = {}
-	game.world = love.physics.newWorld(0, 0)
-	game.level = require 'game.level'
+	state = {}
+	state.main_menu = require 'states.main_menu'
+	state.play = require 'states.play'
+	state.play_menu = require 'states.play_menu'
 
-	game.state = {}
-	game.state.menu = require 'states.main_menu'
-	game.state.play = require 'states.play'
-
-	gs.switch(game.state.menu)
+	gs.switch(state.main_menu)
 end
 
 function love.update(dt)
@@ -37,7 +32,7 @@ end
 
 function love.draw()
 	gs.draw()
-	g.setFont(Font.gui)
+	g.setFont(Font.gui) --temporary, set in styles
 	gui.core.draw()
 
 --DEBUG
@@ -59,18 +54,8 @@ function love.keypressed(key, code)
 
 --DEBUG
 	if key == 'f2' then show_debug = not show_debug end
-	if key == 'f5' then game.level.next() end
-	if key == 'kp+' then paddle:setWidth(paddle:getWidth() + 20) end
-	if key == 'kp-' then paddle:setWidth(paddle:getWidth() - 20) end
 end
 
 function love.mousepressed(x, y, button)
-
---DEBUG
-	if button == 'wu' then
-		paddle:setShapeAngle( paddle:getShapeAngle() + math.pi/10 )
-	end
-	if button == 'wd' then
-		paddle:setShapeAngle( paddle:getShapeAngle() - math.pi/10 )
-	end
+	gs.mousepressed(x, y, button)
 end

@@ -16,8 +16,8 @@ local current_index
 --
 
 local Area = require 'game.level_area'
-local Floor = require 'game.floor'
-local Death = require 'game.death'
+local Floor = require 'game.level_floor'
+local Death = require 'game.level_death'
 local LevelWin = require 'game.level_win'
 
 level.win = LevelWin()
@@ -102,7 +102,7 @@ end
 function level.respawn()
 	reset_balls()
 
-	local ball = game.level.add_ball(g.getWidth()/2, g.getHeight()*4/5)
+	local ball = level.add_ball(g.getWidth()/2, g.getHeight()*4/5)
 	ball.pole = 1
 end
 
@@ -119,7 +119,7 @@ function level.next()
 		if index <= #levels then
 			load_level(index)
 		else
-			gs.switch(game.state.menu)
+			gs.switch(state.menu)
 		end
 	end
 end

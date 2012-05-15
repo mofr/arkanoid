@@ -1,9 +1,15 @@
-local menu = {}
+local menu = gs.new()
 
---callbacks
-local __NULL__ = function() end
-menu.resume = __NULL__
-menu.exit = __NULL__
+local function resume()
+	gs.switch(state.play)
+end
+
+local function exit()
+	gs.switch(state.main_menu)
+end
+
+function menu:init()
+end
 
 function menu:enter()
 	love.mouse.setVisible(true)
@@ -23,22 +29,23 @@ function menu:update(dt)
 	local top = h/3
 
 	if gui.Button('Resume game', w/2-bw/2,top, bw,bh) then
-		menu.resume()
+		resume()
 	end
 	
 	top = top + bh + spacing
 	if gui.Button('Exit to main menu', w/2-bw/2,top, bw,bh) then
-		menu.exit()
+		exit()
 	end
 end
 
 function menu:draw()
+	game.draw()
 	g.setColor(0, 0, 0, 210)
 	g.rectangle('fill', 0, 0, g.getWidth(), g.getHeight())
 end
 
 function menu:keypressed(key)
-	if key == 'escape' or key == 'p' then menu.resume() end
+	if key == 'escape' or key == 'p' then resume() end
 end
 
 return menu

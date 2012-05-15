@@ -23,17 +23,17 @@ modules:
 +balls, blocks as objects with methods, not plain tables
 pause:
 	mouse pause
-player:
++player:
 	score
 	power
-	paddle
+	+paddle
 blocks health
 +timer instances
 drawing routines:
 	balls
 	blocks
 	background
-	game interface (score, borders, power)
+	game interface (score, borders, power. menus)
 help (f1) with controls
 bonuses
 balls pathtracing
