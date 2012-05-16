@@ -26,7 +26,7 @@ level.blocks = {}
 level.balls = {}
 level.timer = Timer()
 level.area = Area(10, 10, g.getWidth()-10, g.getHeight()-30)
-level.floor = Floor(g.getHeight()-40)
+level.floor = Floor(level.area.bottom-3)
 
 function reset_blocks()
 	for i, block in ipairs(level.blocks) do
