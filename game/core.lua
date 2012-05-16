@@ -6,6 +6,7 @@ Block = require 'game.block'
 game.world = love.physics.newWorld(0, 0)
 game.level = require 'game.level'
 game.player = require 'game.player'
+require 'game.collisions'
 
 function game.start()
 	game.level.first()

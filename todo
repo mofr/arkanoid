@@ -5,6 +5,8 @@ levels:
 	bonuses
 	style: board, balls, blocks, gui, background
 
+level start (ball on the paddle)
+level finish (hide balls?)
 +world(level) bounds
 +paddle:
 	+shape, +position
