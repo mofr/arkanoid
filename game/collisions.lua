@@ -8,8 +8,14 @@ function endContact(a, b, c)
 	local d2 = b:getUserData()
 
 	--kill block
-	if d1 and d1.block then d1.block.dead = true end
-	if d2 and d2.block then d2.block.dead = true end
+	if d1 and d1.block then 
+		d1.block.dead = true
+		game.player.score = game.player.score + 10
+	end
+	if d2 and d2.block then
+		d2.block.dead = true 
+		game.player.score = game.player.score + 10
+	end
 
 	--ball + floor
 	if d1 and d2 then

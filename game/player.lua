@@ -3,6 +3,11 @@ local player = {}
 local Paddle = require 'game.player_paddle'
 	
 player.paddle = Paddle()
+player.score = 0
+
+function player.reset()
+	player.score = 0
+end
 
 function player.update(dt)
 	--paddle position

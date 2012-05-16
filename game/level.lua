@@ -90,7 +90,7 @@ function level.next()
 		if index <= #levels then
 			load_level(index)
 		else
-			gs.switch(state.menu)
+			gs.switch(state.main_menu)
 		end
 	end
 end
