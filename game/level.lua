@@ -15,6 +15,8 @@ local current = level.new()
 local current_index
 --
 
+local Ball = require 'game.ball'
+local Block = require 'game.block'
 local Area = require 'game.level_area'
 local Floor = require 'game.level_floor'
 local Death = require 'game.level_death'
@@ -22,24 +24,49 @@ local LevelWin = require 'game.level_win'
 
 level.win = LevelWin()
 level.death = Death()
-level.blocks = {}
-level.balls = {}
 level.timer = Timer()
 level.area = Area(10, 10, g.getWidth()-10, g.getHeight()-30)
 level.floor = Floor(level.area.bottom-3)
 
+local balls = {}
+function level.balls()
+	local i = 0
+	local n = #balls
+	return function ()
+		i = i + 1
+		if i <= n then return balls[i] end
+	end
+end
+function level.ballsCount()
+	return #balls
+end
+
+local blocks = {}
+function level.blocks()
+	local i = 0
+	local n = #blocks
+	return function ()
+		i = i + 1
+		if i <= n then return blocks[i] end
+	end
+end
+function level.blocksCount()
+	return #blocks
+end
+
+
 function reset_blocks()
-	for i, block in ipairs(level.blocks) do
+	for block in level.blocks() do
 		block:destroy()
 	end
-	level.blocks = {}
+	blocks = {}
 end
 
 function reset_balls()
-	for i, ball in ipairs(level.balls) do
+	for ball in level.balls() do
 		ball:destroy()
 	end
-	level.balls = {}
+	balls = {}
 end
 
 function level.reset()
@@ -51,13 +78,13 @@ end
 
 function level.add_block(...)
 	local block = Block(...)
-	table.insert(level.blocks, block)
-	return ball
+	table.insert(blocks, block)
+	return block
 end
 
 function level.add_ball(...)
 	local ball = Ball(...)
-	table.insert(level.balls, ball)
+	table.insert(balls, ball)
 	return ball
 end
 
@@ -103,7 +130,7 @@ function level.update(dt)
 	level.death:update(dt)
 
 	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
-	for _, ball in ipairs(level.balls) do
+	for ball in level.balls() do
 		local v = vector(ball.phys.b:getLinearVelocity())
 		local len = v:len()
 
@@ -119,33 +146,33 @@ function level.update(dt)
 	end
 
 	local block
-	for i = #level.blocks, 1, -1 do
-		block = level.blocks[i]
+	for i = #blocks, 1, -1 do
+		block = blocks[i]
 		if block.dead then
 			block:destroy()
-			table.remove( level.blocks, i )
+			table.remove( blocks, i )
 		end
 	end
 
 	local ball
-	for i = #level.balls, 1, -1 do
-		ball = level.balls[i]
+	for i = #balls, 1, -1 do
+		ball = balls[i]
 		if ball.dead then
 			ball:destroy()
-			table.remove( level.balls, i )
+			table.remove( balls, i )
 		end
 	end
 end
 
 local function draw_blocks()
 	g.setColor(255,255,255)
-	for _, block in ipairs(level.blocks) do
+	for block in level.blocks() do
 		block:draw()
 	end
 end
 
 local function draw_balls()
-	for _, ball in ipairs(level.balls) do
+	for ball in level.balls() do
 		ball:draw()
 	end
 end

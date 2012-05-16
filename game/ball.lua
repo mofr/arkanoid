@@ -35,6 +35,14 @@ function Ball:destroy()
 	self.phys.b:destroy()
 end
 
+function Ball:enable()
+	self.phys.b:setActive(true)
+end
+
+function Ball:disable()
+	self.phys.b:setActive(false)
+end
+
 function Ball:getPosition()
 	return self:getX(), self:getY()
 end

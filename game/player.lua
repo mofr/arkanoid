@@ -23,7 +23,7 @@ function player.update(dt)
 	end
 
 	--apply paddle force to balls
-	for i, ball in ipairs(game.level.balls) do
+	for ball in game.level.balls() do
 		local dx = player.paddle.x+player.paddle.w/2 - ball:getX()
 		local dy = player.paddle.y - ball:getY()
 		local d = math.sqrt(dx*dx+dy*dy)
