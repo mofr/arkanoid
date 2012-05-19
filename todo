@@ -9,7 +9,7 @@ level finish (hide balls?)
 +paddle:
 	+shape, +position
 	+round shape
-	try dynamic body
+	-try dynamic body
 objects interaction:
 	+paddle and balls
 	+balls and blocks

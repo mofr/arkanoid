@@ -1,13 +1,5 @@
 local menu = gs.new()
 
-local function resume()
-	gs.switch(state.play)
-end
-
-local function exit()
-	gs.switch(state.main_menu)
-end
-
 function menu:init()
 end
 
@@ -19,23 +11,24 @@ end
 function menu:leave()
 end
 
-local bw = 220
-local bh = 40
-local spacing = 10
+local size = {250, 40}
 
 function menu:update(dt)
 	local w = g.getWidth()
 	local h = g.getHeight()
-	local top = h/3
 
-	if gui.Button('Resume game', w/2-bw/2,top, bw,bh) then
-		resume()
+	local pos = {(w-size[1])/2, h/3}
+	gui.group.push{grow='down', spacing=8, size=size, pos=pos}
+
+	if gui.Button{text='Resume game'} then
+		gs.switch(state.play)
 	end
-	
-	top = top + bh + spacing
-	if gui.Button('Exit to main menu', w/2-bw/2,top, bw,bh) then
-		exit()
+
+	if gui.Button{text='Exit to main menu'} then
+		gs.switch(state.main_menu)
 	end
+
+	gui.group.pop()
 end
 
 function menu:draw()

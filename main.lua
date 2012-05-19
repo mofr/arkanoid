@@ -12,8 +12,8 @@ function love.load()
 
 	Font = {}
 	Font.big = g.newFont('media/fonts/Jura-DemiBold.ttf', 50)
-	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 20)
-	Font.normal = g.newFont('media/fonts/Jura-DemiBold.ttf', 13)
+	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 25)
+	Font.normal = g.newFont('media/fonts/Jura-DemiBold.ttf', 15)
 
 	require 'game.core'
 
@@ -40,7 +40,7 @@ function love.draw()
 		local debug_text = ''
 		debug_text = debug_text .. love.timer.getFPS()..' fps';
 		debug_text = debug_text .. '\n' .. game.world:getBodyCount() .. ' bodies'
-		debug_text = debug_text .. '\n' .. #game.level.blocks .. ' blocks'
+		debug_text = debug_text .. '\n' .. game.level.blocksCount() .. ' blocks'
 		g.setColor(255,255,255)
 		g.setFont(Font.normal)
 		g.print(debug_text, 5, 5)
@@ -50,7 +50,7 @@ end
 function love.keypressed(key, code)
 	if key == 'f12' then g.toggleFullscreen() end
 	gs.keypressed(key, code)
-	gui.core.keyboard.pressed(key, code)
+	gui.keyboard.pressed(key, code)
 
 --DEBUG
 	if key == 'f2' then show_debug = not show_debug end
