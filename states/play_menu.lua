@@ -1,5 +1,9 @@
 local menu = gs.new()
 
+local function resume()
+	gs.switch(state.play)
+end
+
 function menu:init()
 end
 
@@ -11,7 +15,7 @@ end
 function menu:leave()
 end
 
-local size = {250, 40}
+local size = {250, 45}
 
 function menu:update(dt)
 	local w = g.getWidth()
@@ -21,7 +25,7 @@ function menu:update(dt)
 	gui.group.push{grow='down', spacing=8, size=size, pos=pos}
 
 	if gui.Button{text='Resume game'} then
-		gs.switch(state.play)
+		resume()
 	end
 
 	if gui.Button{text='Exit to main menu'} then

@@ -8,7 +8,7 @@ function menu:enter()
 	love.mouse.setGrab(false)
 end
 
-local size = {200, 40}
+local size = {200, 45}
 
 function menu:update(dt)
 	local w = g.getWidth()
@@ -33,6 +33,13 @@ function menu:update(dt)
 end
 
 function menu:draw()
+
+	--title
+	local title = 'Arkanoid'
+	local f = Font.title
+	g.setFont(f)
+	g.setColor(255,255,255)
+	g.print(title, g.getWidth()/2-f:getWidth(title)/2, g.getHeight()/6-f:getHeight(title)/2)
 end
 
 function menu:keypressed(key)

@@ -11,8 +11,9 @@ function love.load()
 	love.physics.setMeter(30)
 
 	Font = {}
+	Font.title = g.newFont('media/fonts/Jura-DemiBold.ttf', 70)
 	Font.big = g.newFont('media/fonts/Jura-DemiBold.ttf', 50)
-	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 25)
+	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 20)
 	Font.normal = g.newFont('media/fonts/Jura-DemiBold.ttf', 15)
 
 	require 'game.core'
