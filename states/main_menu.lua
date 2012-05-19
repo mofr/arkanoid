@@ -22,6 +22,11 @@ function menu:update(dt)
 	end
 
 	top = top + bh + spacing
+	if gui.Button('Начать игру', w/2-bw/2,top, bw,bh) then
+		game.start()
+	end
+
+	top = top + bh + spacing
 	if gui.Button('Exit', w/2-bw/2,top, bw,bh) then
 		love.event.push('quit')
 	end
