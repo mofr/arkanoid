@@ -89,10 +89,6 @@ function Ball:draw()
 		end
 		g.circle("fill", x, y, self.r, 32)
 	end
-		
---	local v = vector(ball.phys.b:getLinearVelocity())
---	g.setColor(255,255,255)
---	g.print(v:len(), x, y-ball.r*3)
 end
 
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})

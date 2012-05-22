@@ -49,6 +49,7 @@ function Block:getHeight()
 end
 
 function Block:draw()
+	g.setColor(255,255,255)
 	g.rectangle('fill', self:getX(), self:getY(), self:getSize())
 end
 

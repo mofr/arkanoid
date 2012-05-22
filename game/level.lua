@@ -101,7 +101,7 @@ function level.respawn()
 	reset_balls()
 
 	local ball = level.add_ball(g.getWidth()/2, g.getHeight()*4/5)
-	ball.pole = 1
+	
 end
 
 function level.first()
@@ -136,7 +136,7 @@ function level.update(dt)
 		block = blocks[i]
 		if block.dead then
 			block:destroy()
-			table.remove( blocks, i )
+			table.remove(blocks, i)
 		end
 	end
 
@@ -145,27 +145,19 @@ function level.update(dt)
 		ball = balls[i]
 		if ball.dead then
 			ball:destroy()
-			table.remove( balls, i )
+			table.remove(balls, i)
 		end
 	end
 end
 
-local function draw_blocks()
-	g.setColor(255,255,255)
+function level.draw()
 	for block in level.blocks() do
 		block:draw()
 	end
-end
 
-local function draw_balls()
 	for ball in level.balls() do
 		ball:draw()
 	end
-end
-
-function level.draw()
-	draw_blocks()
-	draw_balls()
 
 	level.win:draw()
 	level.death:draw()

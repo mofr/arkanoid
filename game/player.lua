@@ -9,10 +9,7 @@ function player.reset()
 	player.score = 0
 end
 
-function player.update(dt)
-	--paddle position
-	player.paddle:moveTo(love.mouse.getX())
-
+local function updateForces(dt)
 	--paddle pole
 	if love.mouse.isDown('l') then
 		player.paddle.pole = -1
@@ -34,6 +31,13 @@ function player.update(dt)
 			ball.phys.b:applyForce(fx, fy)
 		end
 	end
+end
+
+function player.update(dt)
+	--paddle position
+	player.paddle:moveTo(love.mouse.getX())
+
+	--updateForces(dt)
 end
 
 function player.debugDraw()
