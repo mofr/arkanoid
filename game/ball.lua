@@ -55,6 +55,24 @@ function Ball:getY()
 	return self.phys.b:getY()
 end
 
+--local min_vel = 50
+function Ball:update(dt)
+
+	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
+	local v = vector(self.phys.b:getLinearVelocity())
+	local len = v:len()
+
+	if len > 1000 then
+		v = v:normalized()*1000
+		self.phys.b:setLinearVelocity(v:unpack())
+--	else
+--		v = v:clone()
+--		if math.abs(v.x) < min_vel then v.x = min_vel*math.sign(v.x) end
+--		if math.abs(v.y) < min_vel then v.y = min_vel*math.sign(v.y) end
+--		ball.phys.b:setLinearVelocity(v:unpack())
+	end
+end
+
 function Ball:draw()
 	local x, y = self:getPosition()
 		

@@ -122,27 +122,13 @@ function level.next()
 	end
 end
 
-local min_vel = 50
-
 function level.update(dt)
 	level.timer:update(dt)
 	level.win:update(dt)
 	level.death:update(dt)
 
-	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
 	for ball in level.balls() do
-		local v = vector(ball.phys.b:getLinearVelocity())
-		local len = v:len()
-
-		if len > 1000 then
-			v = v:normalized()*1000
-			ball.phys.b:setLinearVelocity(v:unpack())
---		else
---			v = v:clone()
---			if math.abs(v.x) < min_vel then v.x = min_vel*math.sign(v.x) end
---			if math.abs(v.y) < min_vel then v.y = min_vel*math.sign(v.y) end
---			ball.phys.b:setLinearVelocity(v:unpack())
-		end
+		ball:update(dt)
 	end
 
 	local block

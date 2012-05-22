@@ -5,7 +5,7 @@ levels:
 
 fullscreen resolution (wide)
 level start (ball on the paddle)
-level finish (hide balls?)
++level finish (hide balls?)
 +paddle:
 	+shape, +position
 	+round shape
