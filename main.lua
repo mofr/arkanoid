@@ -33,7 +33,6 @@ end
 
 function love.draw()
 	gs.draw()
-	g.setFont(Font.gui) --temporary, set in styles
 	gui.core.draw()
 
 --DEBUG

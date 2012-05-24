@@ -21,6 +21,8 @@ function menu:update(dt)
 	local w = g.getWidth()
 	local h = g.getHeight()
 
+	g.setFont(Font.gui)
+
 	local pos = {(w-size[1])/2, h/3}
 	gui.group.push{grow='down', spacing=8, size=size, pos=pos}
 
