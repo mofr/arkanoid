@@ -3,10 +3,10 @@ levels:
 	bonuses
 	style: board, balls, blocks, gui, background
 
-EntityList
 fullscreen resolution (wide)
 level start (ball on the paddle)
 +level finish (hide balls?)
++EntityList
 +paddle:
 	+shape, +position
 	+round shape
