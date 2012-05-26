@@ -1,4 +1,4 @@
-local menu = gs.new()
+local menu = Gamestate.new()
 
 function menu:init()
 end
@@ -17,21 +17,23 @@ function menu:update(dt)
 	g.setFont(Font.gui)
 
 	local pos = {(w-size[1])/2, h/3}
-	gui.group.push{grow='down', spacing=8, size=size, pos=pos}
+	GUI.group.push{grow='down', spacing=8, size=size, pos=pos}
 
-	if gui.Button{text='Start game'} then
+	if GUI.Button{text='Start game'} then
 		game.start()
+		Gamestate.switch(state.play)
 	end
 
-	if gui.Button{text='Начать игру'} then
+	if GUI.Button{text='Начать игру'} then
 		game.start()
+		Gamestate.switch(state.play)
 	end
 
-	if gui.Button{text='Exit'} then
+	if GUI.Button{text='Exit'} then
 		love.event.push('quit')
 	end
 
-	gui.group.pop()
+	GUI.group.pop()
 end
 
 function menu:draw()

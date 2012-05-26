@@ -1,8 +1,11 @@
 local player = {}
 
 local Paddle = require 'game.player_paddle'
+local Ball = require 'game.ball'
 	
 player.paddle = Paddle()
+player.balls = EntityList(Ball)
+player.catched_balls = {}
 player.score = 0
 
 function player.reset()
@@ -20,7 +23,7 @@ local function updateForces(dt)
 	end
 
 	--apply paddle force to balls
-	for ball in game.level.balls() do
+	for ball in player.balls() do
 		local dx = player.paddle.x+player.paddle.w/2 - ball:getX()
 		local dy = player.paddle.y - ball:getY()
 		local d = math.sqrt(dx*dx+dy*dy)
@@ -33,15 +36,42 @@ local function updateForces(dt)
 	end
 end
 
-function player.update(dt)
-	--paddle position
-	player.paddle:moveTo(love.mouse.getX())
+local function catch_balls()
+	for ball in player.balls() do
+		ball:disable()
+		table.insert(player.catched_balls, ball)
+	end
+end
 
-	--updateForces(dt)
+local function release_balls()
+	for _, ball in ipairs(player.catched_balls) do
+		ball:enable()
+		ball.phys.b:setLinearVelocity(0, 100)
+	end
+end
+
+function player.update(dt)
+	player.paddle:moveTo(love.mouse.getX())
+	player.balls:update(dt)
+
+	for _, ball in ipairs(player.catched_balls) do
+		ball.phys.b:setPosition(player.paddle:getX()+player.paddle:getWidth()/2, player.paddle:getY()-player.paddle:getHeight())
+	end
+
+	updateForces(dt)
 end
 
 function player.debugDraw()
-	player.paddle:debugDraw()
+	player.paddle:draw()
+	player.balls:draw()
+end
+
+function player.respawn()
+	player.balls:clear()
+
+	player.balls:new{x=g.getWidth()/2, y=g.getHeight()*4/5, pole=1}
+
+	--catch_balls()
 end
 
 return player

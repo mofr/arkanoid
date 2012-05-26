@@ -24,7 +24,7 @@ function build_shape(w, x, y, phi)
 	local ang = (math.pi-phi)/2
 
 	for i=1,points do
-		local p = vector(r, 0):rotated(ang)
+		local p = Vector(r, 0):rotated(ang)
 		table.insert(shape, p.x+x)
 		table.insert(shape, -p.y-y)
 		ang = ang + step
@@ -69,9 +69,9 @@ local function new()
 	return setmetatable(paddle, Paddle)
 end
 
-local function updateShape(paddle)
-	paddle:destroy()
-	paddle.phys = createPhysics(paddle)
+local function updateShape(self)
+	self:destroy()
+	self.phys = createPhysics(self)
 end
 
 function Paddle:destroy()
@@ -133,6 +133,10 @@ function Paddle:debugDraw()
 	end
 --	g.rectangle("fill", self.x, self.y-self.h, self.w, self.h)
 	g.polygon('fill', self.phys.b:getWorldPoints(self.phys.s:getPoints()))
+end
+
+function Paddle:draw()
+	self:debugDraw()
 end
 
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})

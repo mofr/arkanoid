@@ -9,9 +9,9 @@ require 'game.collisions'
 
 function game.start()
 	game.timer:clear()
-	game.player.reset()
 	game.level.first()
-	gs.switch(state.play)
+	game.player.reset()
+	game.player.respawn()
 end
 
 function game.update(dt)

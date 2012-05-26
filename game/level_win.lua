@@ -15,16 +15,16 @@ end
 
 function LevelWin:update(dt)
 	if not self.win then
-		if game.level.blocksCount() == 0 and not game.level.death() then
+		if game.level.blocks:count() == 0 and not game.level.death() then
 			self.win = true
-			for ball in game.level.balls() do
+			for ball in game.player.balls() do
 				ball.dead = true
 			end
 
 			game.level.timer:add(3, function()
 				self.win = false
 				game.level.next()
-				game.level.respawn()
+				game.player.respawn()
 			end)
 		end
 	end

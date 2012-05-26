@@ -2,7 +2,7 @@ local level = game.level.new()
 
 local function block_creator(w, h)
 	return function(x, y)
-		return game.level.add_block(x, y, w, h)
+		return game.level.blocks:new(x, y, w, h)
 	end
 end
 

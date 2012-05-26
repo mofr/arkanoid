@@ -1,7 +1,7 @@
-local menu = gs.new()
+local menu = Gamestate.new()
 
 local function resume()
-	gs.switch(state.play)
+	Gamestate.switch(state.play)
 end
 
 function menu:init()
@@ -24,17 +24,17 @@ function menu:update(dt)
 	g.setFont(Font.gui)
 
 	local pos = {(w-size[1])/2, h/3}
-	gui.group.push{grow='down', spacing=8, size=size, pos=pos}
+	GUI.group.push{grow='down', spacing=8, size=size, pos=pos}
 
-	if gui.Button{text='Resume game'} then
+	if GUI.Button{text='Resume game'} then
 		resume()
 	end
 
-	if gui.Button{text='Exit to main menu'} then
-		gs.switch(state.main_menu)
+	if GUI.Button{text='Exit to main menu'} then
+		Gamestate.switch(state.main_menu)
 	end
 
-	gui.group.pop()
+	GUI.group.pop()
 end
 
 function menu:draw()

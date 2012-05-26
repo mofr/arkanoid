@@ -15,12 +15,12 @@ end
 
 function Death:update(dt)
 	if not self.dead then
-		self.dead = game.level.ballsCount() == 0 and not game.level.win()
+		self.dead = game.player.balls:count() == 0 and not game.level.win()
 
 		if self.dead then
 			game.level.timer:add(3, function()
 				self.dead = false
-				game.level.respawn()
+				game.player.respawn()
 			end)
 		end
 	end

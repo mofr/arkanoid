@@ -1,32 +1,23 @@
 local Ball = {}
 Ball.__index = Ball
 
-local function new(x, y, velx, vely, r, m)
+local function new(args)
 	local ball = {}
 
-	x = x or 100
-	y = y or 100
-	r = r or 10
-
-	ball.x = x
-	ball.y = y
-	ball.velx = velx or 0
-	ball.vely = vely or 0
-	ball.r = r
-	ball.m = m or 400
-	ball.pole = 0
-	ball.ax = 0
-	ball.ay = 0
+	ball.x = args.x
+	ball.y = args.y
+	ball.r = args.r or 10
+	ball.m = args.m or 400
+	ball.pole = args.pole or 0
 
 	ball.phys = {}
-	ball.phys.b = love.physics.newBody(game.world, x, y, 'dynamic')
+	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
 	ball.phys.b:setMass(10)
-	ball.phys.s = love.physics.newCircleShape(r)
+	ball.phys.s = love.physics.newCircleShape(ball.r)
 	ball.phys.f = love.physics.newFixture(ball.phys.b, ball.phys.s)
 	ball.phys.f:setFriction(0)
 	ball.phys.f:setRestitution(1)
 	ball.phys.f:setUserData({ball=ball})
---	ball.phys.b:applyLinearImpulse(230, 230)
 
 	return setmetatable(ball, Ball)
 end
@@ -59,7 +50,7 @@ end
 function Ball:update(dt)
 
 	--limit minimum (to avoid non-bounce collisions) and maximum balls velocity
-	local v = vector(self.phys.b:getLinearVelocity())
+	local v = Vector(self.phys.b:getLinearVelocity())
 	local len = v:len()
 
 	if len > 1000 then

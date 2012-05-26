@@ -48,6 +48,9 @@ function Block:getHeight()
 	return self.h
 end
 
+function Block:update(dt)
+end
+
 function Block:draw()
 	g.setColor(255,255,255)
 	g.rectangle('fill', self:getX(), self:getY(), self:getSize())
