@@ -35,8 +35,6 @@ end
 
 local function createPhysics(paddle)
 	local phys = {}
---	phys.b = love.physics.newBody(game.world, paddle.x+paddle.w/2, paddle.y-paddle.h/2, 'static')
---	phys.s = love.physics.newRectangleShape(paddle.w, paddle.h)
 	phys.b = love.physics.newBody(game.world, paddle.x, paddle.y, 'static')
 	phys.s = love.physics.newChainShape(true, unpack(build_shape(paddle.w,paddle.w/2,paddle.h/2, paddle.phi)) )
 
@@ -61,7 +59,7 @@ local function new()
 	paddle.w = w
 	paddle.h = h
 	paddle.pole = 0
-	paddle.m = 3000
+	paddle.m = 800
 	paddle.phi = math.pi/3
 
 	paddle.phys = createPhysics(paddle)
@@ -131,7 +129,6 @@ function Paddle:debugDraw()
 	else
 		g.setColor(255, 255, 255)
 	end
---	g.rectangle("fill", self.x, self.y-self.h, self.w, self.h)
 	g.polygon('fill', self.phys.b:getWorldPoints(self.phys.s:getPoints()))
 end
 

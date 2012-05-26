@@ -7,7 +7,7 @@ local function new(args)
 	ball.x = args.x
 	ball.y = args.y
 	ball.r = args.r or 10
-	ball.m = args.m or 400
+	ball.m = args.m or 100
 	ball.pole = args.pole or 0
 
 	ball.phys = {}

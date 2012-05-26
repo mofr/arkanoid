@@ -18,12 +18,12 @@ function love.load()
 	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 20)
 	Font.normal = g.newFont('media/fonts/Jura-DemiBold.ttf', 15)
 
-	require 'game'
-
 	state = {}
 	state.main_menu = require 'states.main_menu'
 	state.play = require 'states.play'
 	state.play_menu = require 'states.play_menu'
+
+	require 'game'
 
 	Gamestate.switch(state.main_menu)
 end
