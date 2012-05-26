@@ -24,6 +24,6 @@ end
 
 function game.draw()
 	game.level.draw()
-	game.player.debugDraw()
+	game.player.draw()
 	game.hud.draw()
 end

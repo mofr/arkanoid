@@ -17,7 +17,7 @@ function build_shape(w, x, y, phi)
 		return shape
 	end
 
-	local points = 10
+	local points = 16
 	local r = w/2/math.sin(phi/2)
 	y = y - (r^2-w^2/4)^0.5
 	local step = phi/(points-1)
@@ -60,7 +60,7 @@ local function new()
 	paddle.h = h
 	paddle.pole = 0
 	paddle.m = 800
-	paddle.phi = math.pi/3
+	paddle.phi = math.pi/2
 
 	paddle.phys = createPhysics(paddle)
 
@@ -77,7 +77,7 @@ function Paddle:destroy()
 end
 
 function Paddle:setShapeAngle(phi)
-	self.phi = math.clamp(phi, 0, math.pi)
+	self.phi = math.clamp(phi, 0, math.pi*2/3)
 	updateShape(self)
 end
 

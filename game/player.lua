@@ -5,7 +5,7 @@ local Ball = require 'game.ball'
 	
 player.paddle = Paddle()
 player.balls = EntityList(Ball)
-player.catched_balls = {}
+--player.catched_balls = {}
 player.score = 0
 
 function player.reset()
@@ -14,9 +14,9 @@ end
 
 local function updateForces(dt)
 	--paddle pole
-	if love.mouse.isDown('l') then
+	if love.mouse.isDown('r') then
 		player.paddle.pole = -1
-	elseif love.mouse.isDown('r') then
+	elseif love.mouse.isDown('l') then
 		player.paddle.pole = 1
 	else
 		player.paddle.pole = 0
@@ -36,6 +36,7 @@ local function updateForces(dt)
 	end
 end
 
+--[[
 local function catch_balls()
 	for ball in player.balls() do
 		ball:disable()
@@ -49,14 +50,17 @@ local function release_balls()
 		ball.phys.b:setLinearVelocity(0, 100)
 	end
 end
+]]
 
 function player.update(dt)
 	player.paddle:moveTo(love.mouse.getX())
 	player.balls:update(dt)
 
+--[[
 	for _, ball in ipairs(player.catched_balls) do
 		ball.phys.b:setPosition(player.paddle:getX()+player.paddle:getWidth()/2, player.paddle:getY()-player.paddle:getHeight())
 	end
+]]
 
 	updateForces(dt)
 end
@@ -64,6 +68,10 @@ end
 function player.debugDraw()
 	player.paddle:draw()
 	player.balls:draw()
+end
+
+function player.draw()
+	player.debugDraw()
 end
 
 function player.respawn()

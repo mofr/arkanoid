@@ -9,6 +9,7 @@ local function new(args)
 	ball.r = args.r or 10
 	ball.m = args.m or 100
 	ball.pole = args.pole or 0
+	ball.max_vel = args.max_vel or 700
 
 	ball.phys = {}
 	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
@@ -53,8 +54,8 @@ function Ball:update(dt)
 	local v = Vector(self.phys.b:getLinearVelocity())
 	local len = v:len()
 
-	if len > 1000 then
-		v = v:normalized()*1000
+	if len > self.max_vel then
+		v = v:normalized()*self.max_vel
 		self.phys.b:setLinearVelocity(v:unpack())
 --	else
 --		v = v:clone()

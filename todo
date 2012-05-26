@@ -4,7 +4,7 @@ levels:
 	style: board, balls, blocks, gui, background
 
 fullscreen resolution (wide)
-level start (ball on the paddle)
+-level start (ball on the paddle)
 +level finish (hide balls?)
 +EntityList
 +paddle:
