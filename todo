@@ -35,7 +35,7 @@ drawing routines:
 	background
 	game interface (score, borders, power)
 	menus
-help (f1) with controls
++help (f1) with controls
 bonuses
 balls pathtracing
 +grab mouse
