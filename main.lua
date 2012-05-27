@@ -21,6 +21,7 @@ function love.load()
 	state = {}
 	state.main_menu = require 'states.main_menu'
 	state.play = require 'states.play'
+	state.play_help = require 'states.play_help'
 	state.play_menu = require 'states.play_menu'
 
 	require 'game'

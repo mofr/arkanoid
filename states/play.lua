@@ -32,6 +32,7 @@ function main:leave()
 end
 
 function main:keypressed(key)
+	if key == 'f1' then Gamestate.switch(state.play_help) end
 	if key == 'escape' or key == 'p' then Gamestate.switch(state.play_menu) end
 
 --DEBUG
