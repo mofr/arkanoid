@@ -18,8 +18,12 @@ local function new(height)
 end
 
 function Floor:debugDraw()
-	g.setColor(255,55,55, 40)
+	g.setColor(255,55,55, 80)
 	g.line(self.phys.b:getWorldPoints(self.phys.s:getPoints()))
+end
+
+function Floor:draw()
+	self:debugDraw()
 end
 
 return setmetatable({new=new}, {__call = function(_, ...) return new(...) end})

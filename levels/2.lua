@@ -1,18 +1,15 @@
 local level = game.level.new()
 
-local function block_creator(w, h)
-	return function(x, y)
-		return game.level.blocks:new(x, y, w, h)
-	end
-end
-
-local b = block_creator(50, 20)
-
 function level.enter()
-	b(100, 100)
-	b(155, 100)
-	b(210, 100)
-	b(265, 100)
+	local b = BlockBuilder{size={60,40}, spacing=1, margin={0, 0, 300, 0}}
+
+	local w, h = 5, 6
+
+	b:moveTo(1, 4)
+	b:rect(w, h)
+
+	b:moveTo(b:width()-w-2, 4)
+	b:rect(w, h)
 end
 
 return level

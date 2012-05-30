@@ -27,4 +27,8 @@ function Area:debugDraw()
 	g.line(self.outline.b:getWorldPoints(self.outline.s:getPoints()))
 end
 
+function Area:draw()
+	self:debugDraw()
+end
+
 return setmetatable({new=new}, {__call = function(_, ...) return new(...) end})
