@@ -7,9 +7,9 @@ local function new(args)
 	ball.x = args.x
 	ball.y = args.y
 	ball.r = args.r or 10
-	ball.m = args.m or 100
+	ball.m = args.m or 200
 	ball.pole = args.pole or 0
-	ball.max_vel = args.max_vel or 700
+	ball.max_vel = args.max_vel or 1000
 
 	ball.phys = {}
 	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
