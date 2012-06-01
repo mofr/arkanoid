@@ -2,19 +2,19 @@ local Floor = {}
 Floor.__index = Floor
 
 local function new(height)
-	local floor = {}
-	floor.height = height
+	local self = {}
+	self.height = height
 
-	floor.phys = {}
-	phys = floor.phys
+	self.phys = {}
+	phys = self.phys
 	phys.b = love.physics.newBody(game.world, 0, 0, 'static')
 	phys.s = love.physics.newEdgeShape(0,height, g.getWidth(),height)
 	phys.f = love.physics.newFixture(phys.b, phys.s)
 	phys.f:setFriction(0)
 	phys.f:setRestitution(1)
-	phys.f:setUserData({floor=floor})
+	phys.f:setUserData({'floor', self})
 
-	return setmetatable(floor, Floor)
+	return setmetatable(self, Floor)
 end
 
 function Floor:debugDraw()

@@ -5,11 +5,13 @@ game.world = love.physics.newWorld(0, 0)
 game.level = require 'game.level'
 game.player = require 'game.player'
 game.hud = require 'game.hud'
-require 'game.collisions'
+game.collider = require 'game.collider'
 
 function game.start()
+	game.collider:reset()
 	game.timer:clear()
 	game.level.first()
+
 	game.player.reset()
 	game.player.respawn()
 end

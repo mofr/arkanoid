@@ -18,7 +18,7 @@ local function new(args)
 	ball.phys.f = love.physics.newFixture(ball.phys.b, ball.phys.s)
 	ball.phys.f:setFriction(0)
 	ball.phys.f:setRestitution(1)
-	ball.phys.f:setUserData({ball=ball})
+	ball.phys.f:setUserData({'ball', ball})
 
 	return setmetatable(ball, Ball)
 end

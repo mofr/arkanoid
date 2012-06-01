@@ -34,6 +34,15 @@ function level.reset()
 	level.death:reset()
 	level.timer:clear()
 	level.blocks:clear()
+
+	game.collider:registerCallback('ball','block', function(ball, block)
+		block.dead = true
+		game.player.score = game.player.score + 10
+	end)
+	
+	game.collider:registerCallback('ball','floor', function(ball, floor) 
+		ball.dead = true 
+	end)
 end
 
 local function load_level(index)

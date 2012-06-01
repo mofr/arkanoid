@@ -41,7 +41,7 @@ local function createPhysics(paddle)
 	phys.f = love.physics.newFixture(phys.b, phys.s)
 	phys.f:setFriction(0)
 	phys.f:setRestitution(1)
-	phys.f:setUserData({paddle=paddle})
+	phys.f:setUserData({'paddle', paddle})
 
 	return phys
 end

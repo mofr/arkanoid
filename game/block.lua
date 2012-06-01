@@ -15,7 +15,7 @@ local function new(x, y, w, h)
 	block.phys.f = love.physics.newFixture(block.phys.b, block.phys.s)
 	block.phys.f:setFriction(0)
 	block.phys.f:setRestitution(1)
-	block.phys.f:setUserData({block=block})
+	block.phys.f:setUserData({'block', block})
 
 	return setmetatable(block, Block)
 end
