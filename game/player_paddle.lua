@@ -49,8 +49,8 @@ end
 local function new()
 	local paddle = {}
 
-	local x = game.level.area.w/2
-	local y = game.level.area.bottom
+	local x = game.level.w/2
+	local y = game.level.h
 	local w = 100
 	local h = 24
 
@@ -116,8 +116,8 @@ end
 
 function Paddle:moveTo(x)
 	self.x = x-self.w/2
-	if self.x < game.level.area.left then self.x = game.level.area.left end
-	if self.x > game.level.area.right-self.w then self.x = game.level.area.right-self.w end
+	if self.x < 0 then self.x = 0 end
+	if self.x > game.level.w-self.w then self.x = game.level.w-self.w end
 	self.phys.b:setPosition(self.x, self.y)
 end
 

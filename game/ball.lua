@@ -1,18 +1,18 @@
 local Ball = {}
 Ball.__index = Ball
 
+local img = g.newImage('media/ball20.png')
+
 local function new(args)
 	local ball = {}
 
-	ball.x = args.x
-	ball.y = args.y
-	ball.r = args.r or 10
+	ball.r = 10
 	ball.m = args.m or 200
 	ball.pole = args.pole or 0
 	ball.max_vel = args.max_vel or 1000
 
 	ball.phys = {}
-	ball.phys.b = love.physics.newBody(game.world, ball.x, ball.y, 'dynamic')
+	ball.phys.b = love.physics.newBody(game.world, args.x, args.y, 'dynamic')
 	ball.phys.b:setMass(10)
 	ball.phys.s = love.physics.newCircleShape(ball.r)
 	ball.phys.f = love.physics.newFixture(ball.phys.b, ball.phys.s)
@@ -66,21 +66,7 @@ function Ball:update(dt)
 end
 
 function Ball:draw()
-	local x, y = self:getPosition()
-		
-	if self.ps then
-		g.setBlendMode("additive")
-		g.draw(self.ps, 0, 0)
-	else
-		if self.pole == 1 then
-			g.setColor(255, 0, 0)
-		elseif self.pole == -1 then
-			g.setColor(0, 0, 255)
-		else
-			g.setColor(255, 255, 255)
-		end
-		g.circle("fill", x, y, self.r, 32)
-	end
+	g.draw(img, self:getX()-self.r, self:getY()-self.r)
 end
 
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})

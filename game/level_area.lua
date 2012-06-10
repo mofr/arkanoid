@@ -1,30 +1,36 @@
 local Area = {}
 Area.__index = Area
 
-local function new(left, top, right, bottom)
-	local area = {}
-	area.left = left
-	area.top = top
-	area.right = right
-	area.bottom = bottom
+local function createPhysics(self)
+	local phys = {}
 
-	area.w = right-left
-	area.h = bottom-top
+	phys.b = love.physics.newBody(game.world, 0, 0, 'static')
+	phys.s = love.physics.newChainShape(true, 0,0, self.w,0, self.w,self.h, 0,self.h)
+	phys.f = love.physics.newFixture(phys.b, phys.s)
+	phys.f:setFriction(0)
+	phys.f:setRestitution(1)
+	phys.f:setUserData({'bounds', self})
 
-	area.outline = {}
-	outline = area.outline
-	outline.b = love.physics.newBody(game.world, 0, 0, 'static')
-	outline.s = love.physics.newChainShape(true, left,top, right,top, right,bottom, left,bottom)
-	outline.f = love.physics.newFixture(outline.b, outline.s)
-	outline.f:setFriction(0)
-	outline.f:setRestitution(1)
+	return phys
+end
 
-	return setmetatable(area, Area)
+local function new(w, h)
+	local self = {}
+	self.w = w
+	self.h = h
+
+	self.phys = createPhysics(self)
+
+	return setmetatable(self, Area)
+end
+
+function Area:destroy()
+	self.phys.b:destroy()
 end
 
 function Area:debugDraw()
 	g.setColor(255,255,255)
-	g.line(self.outline.b:getWorldPoints(self.outline.s:getPoints()))
+	g.line(self.phys.b:getWorldPoints(self.phys.s:getPoints()))
 end
 
 function Area:draw()

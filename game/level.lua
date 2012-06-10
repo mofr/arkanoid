@@ -1,6 +1,6 @@
 local level = {}
 
-local levels = {'1', '2', '3'}
+local levels = {'1', '2', '3', '4'}
 
 -- level instances
 local __NULL__ = function() end
@@ -15,21 +15,37 @@ local current
 local current_index
 --
 
-local Block = require 'game.block'
 local Area = require 'game.level_area'
 local Floor = require 'game.level_floor'
 local Death = require 'game.level_death'
 local LevelWin = require 'game.level_win'
-BlockBuilder = require 'game.block_builder'
+require 'game.level_grid'
 
 level.win = LevelWin()
 level.death = Death()
 level.timer = Timer()
-level.area = Area(10, 10, g.getWidth()-10, g.getHeight()-30)
-level.floor = Floor(level.area.bottom-5)
-level.blocks = EntityList(Block)
 
-function level.reset()
+level.w = g.getWidth()-20
+level.h = g.getHeight()-40
+
+level.area = Area(level.w, level.h)
+level.floor = Floor(level.w, level.h-5)
+level.blocks = EntityList()
+
+function level.setSize(w, h)
+	level.area:destroy()
+	level.w = w
+	if h then level.h = h end
+
+	level.area = Area(level.w, level.h)
+	level.floor = Floor(level.w, level.h-5)
+end
+
+function level.name()
+	return levels[current_index]
+end
+
+local function cleanup_level()
 	level.win:reset()
 	level.death:reset()
 	level.timer:clear()
@@ -39,7 +55,7 @@ end
 local function load_level(index)
 	--cleanup
 	if current then current.leave() end
-	level.reset()
+	cleanup_level()
 
 	--load next
 	local level_name = levels[index]
@@ -69,7 +85,6 @@ end
 
 function level.update(dt)
 	level.timer:update(dt)
-
 	level.blocks:update(dt)
 
 	level.win:update(dt)
@@ -78,12 +93,11 @@ end
 
 function level.draw()
 	level.blocks:draw()
+	level.area:draw()
+	level.floor:draw()
 
 	level.win:draw()
 	level.death:draw()
-
-	level.area:draw()
-	level.floor:draw()
 end
 
 return level

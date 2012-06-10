@@ -36,7 +36,7 @@ function LevelWin:draw()
 		g.setFont(Font.big)
 		local text = 'Level complete!'
 		local f = g.getFont()
-		g.print(text, (g.getWidth()-f:getWidth(text))/2, (g.getHeight()-f:getHeight(text))/2)
+		g.print(text, (game.level.w-f:getWidth(text))/2, (game.level.h-f:getHeight(text))/2)
 	end
 end
 

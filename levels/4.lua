@@ -8,21 +8,17 @@ function level.enter()
 	end
 
 	LevelGrid {
-		cellSize = {60, 40},
-		spacing = 1,
+		cellSize = {80, 50},
+		spacing = 3,
 		d = dummy,
 		[[
 			.
 			.
 			.
+			dddd..dddd
 			.
-			.dddddd..dddddd.
-			.d....d..d....d
-			.d....d..d....d
-			.d....d..d....d
-			.d....d..d....d
-			.d....d..d....d
-			.dddddd..dddddd
+			.
+			dddd..dddd
 		]]
 	}
 end

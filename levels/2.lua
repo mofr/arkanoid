@@ -1,15 +1,29 @@
 local level = game.level.new()
 
+local White = require 'blocks.white'
+
 function level.enter()
-	local b = BlockBuilder{size={60,40}, spacing=1, margin={0, 0, 300, 0}}
+	local function dummy(rect)
+		game.level.blocks:add( White(rect) )
+	end
 
-	local w, h = 5, 6
-
-	b:moveTo(1, 4)
-	b:rect(w, h)
-
-	b:moveTo(b:width()-w-2, 4)
-	b:rect(w, h)
+	LevelGrid {
+		cellSize = White.size,
+		spacing = 0,
+		d = dummy,
+		[[
+			.
+			.
+			.
+			.
+			d........d
+			d........d
+			d..d..d..d
+			d..d..d..d
+			dddddddddd
+			dddddddddd
+		]]
+	}
 end
 
 return level

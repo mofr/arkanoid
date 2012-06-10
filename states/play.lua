@@ -37,6 +37,7 @@ function main:keypressed(key)
 
 --DEBUG
 	if key == 'f5' then game.level.next() end
+	if key == 'b' then game.player.balls:new{x=game.player.paddle.x, y=game.player.paddle.y-30, pole=1} end
 	if key == 'kp+' then game.player.paddle:setWidth(game.player.paddle:getWidth() + 20) end
 	if key == 'kp-' then game.player.paddle:setWidth(game.player.paddle:getWidth() - 20) end
 end

@@ -2,14 +2,17 @@ local player = {}
 
 local Paddle = require 'game.player_paddle'
 local Ball = require 'game.ball'
+local effectiveness = require 'game.player_effectiveness'
 	
 player.paddle = Paddle()
 player.balls = EntityList(Ball)
 --player.catched_balls = {}
 player.score = 0
+player.effectiveness = 0
 
 function player.reset()
 	player.score = 0
+	effectiveness.reset()
 end
 
 local function updateForces(dt)
@@ -53,6 +56,7 @@ end
 ]]
 
 function player.update(dt)
+	effectiveness.update(dt)
 	player.paddle:moveTo(love.mouse.getX())
 	player.balls:update(dt)
 
@@ -77,7 +81,7 @@ end
 function player.respawn()
 	player.balls:clear()
 
-	player.balls:new{x=g.getWidth()/2, y=g.getHeight()*4/5, pole=1}
+	player.balls:new{x=game.level.w/2, y=game.level.h*4/5, pole=1}
 
 	--catch_balls()
 end
