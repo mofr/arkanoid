@@ -1,16 +1,10 @@
-levels:
-	+blocks: +position, properties
-	bonuses
-	style: board, balls, blocks, gui, background
-
+bonuses
+balls pathtracing
 fullscreen resolution (wide)
--level start (ball on the paddle)
-+level finish (hide balls?)
-+EntityList
-+paddle:
-	+shape, +position
-	+round shape
-	-try dynamic body
+levels:
+	+blocks: +position, +properties
+	bonuses
+	style: board, balls, +blocks, gui, background
 objects interaction:
 	+paddle and balls
 	+balls and blocks
@@ -24,20 +18,26 @@ modules:
 	levels
 pause:
 	mouse pause
+basic drawing routines:
+	+balls
+	+blocks
+	background
+	game interface (score, borders, power)
+	menus
 +player:
 	+score
 	power
 	+paddle
-blocks health
-drawing routines:
-	balls
-	blocks
-	background
-	game interface (score, borders, power)
-	menus
++different block types
+-level start (ball on the paddle)
++level finish (hide balls?)
++EntityList
++paddle:
+	+shape, +position
+	+round shape
+	-try dynamic body
++blocks health
 +help (f1) with controls
-bonuses
-balls pathtracing
 +grab mouse
 +timer instances
 +balls, blocks as objects with methods, not plain tables
