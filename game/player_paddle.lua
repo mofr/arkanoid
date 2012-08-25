@@ -115,9 +115,10 @@ function Paddle:getShapeAngle()
 end
 
 function Paddle:moveTo(x)
-	self.x = x-self.w/2
-	if self.x < 0 then self.x = 0 end
-	if self.x > game.level.w-self.w then self.x = game.level.w-self.w end
+	local newX = x-self.w/2
+	if newX < 0 then newX = 0 end
+	if newX > game.level.w-self.w then newX = game.level.w-self.w end
+	self.x = newX
 	self.phys.b:setPosition(self.x, self.y)
 end
 
@@ -129,11 +130,15 @@ function Paddle:debugDraw()
 	else
 		g.setColor(255, 255, 255)
 	end
-	g.polygon('fill', self.phys.b:getWorldPoints(self.phys.s:getPoints()))
+
+	love.graphics.polygon('fill', self.phys.s:getPoints())
 end
 
 function Paddle:draw()
+	love.graphics.push()
+	love.graphics.translate(self.x, self.y)
 	self:debugDraw()
+	love.graphics.pop()
 end
 
 return setmetatable({new=new}, {__call=function(_, ...) return new(...) end})
