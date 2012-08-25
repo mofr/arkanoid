@@ -30,6 +30,10 @@ function menu:update(dt)
 		resume()
 	end
 
+	if GUI.Button{text='Settings'} then
+		Gamestate.switch(state.settings)
+	end
+
 	if GUI.Button{text='Exit to main menu'} then
 		Gamestate.switch(state.main_menu)
 	end

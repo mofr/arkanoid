@@ -13,16 +13,17 @@ function love.load()
 	love.physics.setMeter(30)
 
 	Font = {}
-	Font.title = g.newFont('media/fonts/Jura-DemiBold.ttf', 70)
-	Font.big = g.newFont('media/fonts/Jura-DemiBold.ttf', 50)
-	Font.gui = g.newFont('media/fonts/Jura-DemiBold.ttf', 20)
-	Font.normal = g.newFont('media/fonts/Jura-DemiBold.ttf', 15)
+	Font.title = love.graphics.newFont('media/fonts/Jura-DemiBold.ttf', 70)
+	Font.big = love.graphics.newFont('media/fonts/Jura-DemiBold.ttf', 50)
+	Font.gui = love.graphics.newFont('media/fonts/Jura-DemiBold.ttf', 20)
+	Font.normal = love.graphics.newFont('media/fonts/Jura-DemiBold.ttf', 15)
 
 	state = {}
 	state.main_menu = require 'states.main_menu'
 	state.play = require 'states.play'
 	state.play_help = require 'states.play_help'
 	state.play_menu = require 'states.play_menu'
+	state.settings = require 'states.settings'
 
 	require 'game'
 
@@ -52,7 +53,6 @@ function love.draw()
 end
 
 function love.keypressed(key, code)
-	if key == 'f12' then g.toggleFullscreen() end
 	Gamestate.keypressed(key, code)
 	GUI.keyboard.pressed(key, code)
 

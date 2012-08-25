@@ -24,9 +24,8 @@ function menu:update(dt)
 		Gamestate.switch(state.play)
 	end
 
-	if GUI.Button{text='Начать игру'} then
-		game.start()
-		Gamestate.switch(state.play)
+	if GUI.Button{text='Settings'} then
+		Gamestate.switch(state.settings)
 	end
 
 	if GUI.Button{text='Exit'} then
