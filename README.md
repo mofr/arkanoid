@@ -1,4 +1,6 @@
 arkanoid
 ========
 
-Arkanoid game on LOVE
+Arkanoid game on LÖVE
+
+http://love2d.org
