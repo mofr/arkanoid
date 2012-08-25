@@ -1,6 +1,10 @@
 bonuses
 balls pathtracing
+small screen fix
 fullscreen resolution (wide)
++settings menu:
+	+fullscreen
+	language
 levels:
 	+blocks: +position, +properties
 	bonuses
@@ -22,7 +26,7 @@ basic drawing routines:
 	+balls
 	+blocks
 	background
-	game interface (score, borders, power)
+	hud (score, borders, power)
 	menus
 +player:
 	+score
